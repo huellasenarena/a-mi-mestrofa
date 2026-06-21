@@ -30,6 +30,7 @@ Bucle de reentrenamiento (Vertex AI Pipeline, programado): extrae de BigQuery �
 - **El clasificador se mantiene ligero** (regresión logística para empezar). Nada de redes profundas — el dataset es pequeño y el embedding hace el trabajo pesado.
 - **Nunca despliegues un modelo nuevo sin pasar la compuerta campeón–challenger.** Un modelo nuevo reemplaza al de producción solo si lo supera en el set de prueba.
 - **El embedding captura tema/tono; las features deterministas capturan la forma** (lo que el embedding se pierde). Ambos alimentan el clasificador.
+- **El corpus es solo en español.** No mezclar idiomas o el modelo aprendería "idioma" en vez de gusto. Implica que no hay API limpia de poemas aleatorios (PoetryDB es inglés); cualquier captura automática iría por scraping.
 
 ## Guardarraíles
 
