@@ -8,6 +8,8 @@
 
 *Fechas ancladas a lunes 23 jun; muévelas si arrancas este fin de semana. Buffer hasta el ~12 jul (portafolio en vivo).*
 
+**Decisión de corpus (20 jun):** el corpus es **solo en español** — no mezclar idiomas, o el clasificador aprendería "idioma" en vez de gusto. Implicación: no hay API limpia de poemas aleatorios en español (PoetryDB es solo inglés), así que la captura automática de poemas (ver Bloque G) iría por *scraping* de varios sitios, no por API.
+
 ---
 
 ## Semana 1 — Que funcione de punta a punta
@@ -50,9 +52,10 @@
 - [ ] Probar la predicción en vivo vía API
 
 ### Bloque G · La app de dos partes — centro de la demo (~8–10 h)
-- [ ] Vista 1: calificar / etiquetar poemas
+- [ ] Vista 1: calificar / etiquetar poemas — incluye **pegar poema + nota** para añadir sin fricción (reemplaza los scripts `add_poem.py`/`rate.py` de la terminal)
 - [ ] Vista 2: leer → calificar → comparar (**tu nota** vs **Gemini genérico** vs **tu modelo**)
 - [ ] Conectar al endpoint + escribir cada predicción y nota a BigQuery
+- [ ] *(extra opcional)* Botón "dame un poema al azar" — *scraping* de sitios de poesía en español (no hay API limpia; ver decisión de corpus arriba). Solo si sobra tiempo.
 
 ### Bloque H · Bucle de reentrenamiento (~5–6 h) ⟵ válvula de seguridad si falta tiempo
 - [ ] Vertex AI Pipeline: extrae → valida → entrena challenger → evalúa vs campeón → compuerta → despliega/conserva
