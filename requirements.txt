@@ -1,0 +1,7 @@
+# Dependencias del recomendador de poesía.
+# Instala en un venv:  python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+
+google-cloud-aiplatform>=1.71   # SDK de Vertex AI (incluye vertexai) — embeddings
+scikit-learn>=1.5               # clasificador ligero (regresión logística)
+numpy>=1.26                     # vectores de embedding
+pandas>=2.2                     # manejo de tablas en el notebook

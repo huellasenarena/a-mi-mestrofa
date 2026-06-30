@@ -1,0 +1,1027 @@
+# Fuentes de poesía para el selector al azar.
+# Cada sitio empieza con una cabecera:  [Nombre del sitio | URL]
+# Debajo, un poeta por línea. Para añadir un sitio nuevo, copia una
+# cabecera y pega sus poetas debajo. Las líneas con # se ignoran.
+
+
+[A media voz | http://amediavoz.com]
+Abril, Juan Carlos
+Acosta, Oscar
+Acquaroni, Rosana
+Acuña, Manuel
+Adonis (Ahmad Said Esber)
+Adoum, Jorge Enrique
+Aguado, Jesús
+Agustini, Delmira
+Ajmátova, Ana
+Alas Mínguez, Leopoldo
+Alberti, Rafael
+Albi, José
+Alcántara, Manuel
+Alegría, Claribel
+Aleixandre, Vicente
+Alighieri, Dante
+Alonso, Dámaso
+Alonso, Odette
+Altolaguirre, Manuel
+Alvarado T., Harold
+Álvarez, Francisco
+Álvarez, José María
+Álvarez Q., Serafín y Joaquín
+Andrade, Eugenio de
+Andrade, Paulo Gonzálvez de
+Andreu, Blanca
+Ángel Montoya, Alberto
+Ángel Silva, Medardo
+Apollinaire, Guillaume
+Arce, Manuel José
+Aragon, Louis
+Arghezi, Tudor
+Aridjis, Homero
+Arp, Jean
+Arriaza, Juan Bautista
+Artaud, Antonin
+Arteche, Miguel
+Arturo, Aurelio
+Atencia, María Victoria
+Atwood, Margaret
+Aub, Max
+Auden, Wystan Hugh
+Augier, Ángel
+Ávila, Santa Teresa de
+Azcoaga, Enrique
+Azúa, Félix de
+Bachmann, Ingeborg
+Baquero, Gastón
+Barba Jacob, Porfirio
+Barca, Pedro Calderón de la
+Barral, Carlos
+Barret, Elizabeth
+Bartolomé, Efraín
+Bashô, Matsuo
+Baudelaire, Charles
+Beckett, Samuel
+Bécquer, Gustavo Adolfo
+Bedregal, Yolanda
+Bellay, Joachim du
+Belli, Gioconda
+Bello, Andrés
+Benavides, Washington
+Benedetti, Mario
+Beneyto, María
+Bengoechea, Javier de
+Benítez Reyes, Felipe
+Beniuc, Mihai
+Benn, Gottfried
+Bernárdez, Francisco Luis
+Bernhard, Thomas
+Bignozzi, Juana
+Bilac, Olavo
+Blake, William
+Blanco, Andrés Eloy
+Blanco-White, José María
+Bleiberg, Germán
+Blok, Aleksandr
+Boccanera, Jorge
+Bolaño, Roberto
+Bonifaz Nuño, Rubén
+Bonnett, Piedad
+Bonnin, Ana Inés
+Borges, Jorge Luis
+Boscán, Juan
+Bosquet, Alain
+Boullosa, Carmen
+Buson, Yosa
+Bousoño, Carlos
+Brecht, Bertolt
+Breton, André
+Brines, Francisco
+Broda, Martine
+Brodsky, Joseph
+Brossa, Joan
+Buesa, José Ángel
+Bukowski, Charles
+Burgos, Julia de
+Burriel, Adolfo
+Byron, Lord
+Caballero Bonald, José Manuel
+Cabañero, Eladio
+Cabral, Manuel del
+Cabrera, Antonio
+Cabrisas, Hilarión
+Cáceres, Esther de
+Cadalso y Vásquez, José
+Cadenas, Rafael
+Camarillo, Mª Enriqueta
+Camões, Luis de
+Campoamor, Ramón de
+Campos, Marco Antonio
+Canales, Alfonso
+Cáncer, Manu
+Cansinos Assens, Rafael
+Canelo, Pureza
+Cano, José Luis
+Carballo Calero, Ricardo
+Cardenal, Ernesto
+Carducci, Giosuè
+Carner, Josep
+Carranza, Eduardo
+Carrera Andrade, Jorge
+Carriego, Evaristo
+Carvajal, Antonio
+Casal, Julián del
+Casariego, Pedro
+Cassian, Nina
+Castaño, Yolanda
+Castellanos, Dora
+Castellanos, Rosario
+Castilla, Rey Don Juan II de
+Castillejo, Cristóbal de
+Castillo, Otto René
+Castro Saavedra, Carlos
+Castro, Eugenio de
+Castro, Juana
+Castro, Luisa
+Castro, Rosalía de
+Cataño, José Carlos
+Caulfield, Carlota
+Cavafy, Constantine
+Celan, Paul
+Celaya, Gabriel
+Cernuda, Luis
+Cervantes Saavedra, Miguel de
+Cesar, Ana Cristina
+Cetina, Gutierre de
+Chacel, Rosa
+Champourcín, Ernestina de
+Char, René
+Charry Lara, Fernando
+Chumacero, Alí
+Cirlot, Juan Eduardo
+Cisneros, Antonio
+Clarà, Israel
+Clariond, Jeannette
+Cobos Wilkins, Juan
+Cocteau, Jean
+Cohen, Leonard
+Coleridge, Samuel T.
+Colinas, Antonio
+Comadira, Narcís
+Comendador, Luis Felipe
+Conde, Carmen
+Coronado, Carolina
+Corredor-Matheos, José
+Cortázar, Julio
+Costafreda, Alfonso
+Courtoisie, Rafael
+Crémer, Victoriano
+Crespo, Ángel
+Cross, Elsa
+Cruchaga, Ángel
+Cruz, San Juan de la
+Cruz, Sor Juana Inés de la
+Cuenca, Luis Alberto de
+Cummings, Edward Estlin
+Cunha, Juan
+Cunqueiro, Álvaro
+D'Annunzio, Gabriel
+Dalton, Roque
+Darío, Rubén
+Dávila Andrade, César
+Debravo, Jorge
+Delmar, Meira
+Desnos, Robert
+Díaz Margarit, Carmen
+Díaz Mirón, Salvador
+Dickinson, Emily
+Diego, Eliseo
+Diego, Gerardo
+Doce, Jordi
+Donne, John
+D'Ors, Miguel
+Drummond de Andrade, Carlos
+Duque Amusco, Alejandro
+Durán, Renata
+Dylan, Bob
+Egea, Javier
+Eguren, José María
+Eichendorff, Joseph von
+Eielson, Jorge Eduardo
+Ekelöf, Gunnar
+Eliot, Thomas S.
+Elytis, Oddysseus
+Éluard, Paul
+Eminescu, Mihai
+Encina, Juan del
+Enzensberger, Hans Magnus
+Escobar Galindo, David
+Espejo, Rafael
+Espriu, Salvador
+Espronceda, José de
+Etchecopar, Dolores
+Felipe, León
+Fernán-Vello, Miguel Anxo
+Fernández, Baldomero
+Fernández Moratín, Nicolás
+Fernández Retamar, Roberto
+Ferrater, Gabriel
+Ferrer, Renée
+Figuera Aymerich, Ángela
+Figueroa, Francisco de
+Flores, Manuel María
+Flórez, Antonio María
+Flórez, Julio
+Florit, Eugenio
+Fonollosa, José María
+Fonte, Ramiro
+Foppa, Alaíde
+Forner, Juan Pablo
+Frost, Robert
+Fuertes, Gloria
+Gabriel y Galán, José María
+Gaitán Durán, Jorge
+Gala, Antonio
+Gallego, Vicente
+Gallegos, Mía
+Gálvez, Francisco
+Gamoneda, Antonio
+Gandía, Pedro
+Gangotena, Alfredo
+Ganivet, Ángel
+Gaos, Vicente
+García, Alvaro
+García Baena, Pablo
+García Casado, Pablo
+García, Concha
+García, Eduardo
+García López, Ángel
+García Lorca, Federico
+García Marruz, Fina
+García Martín, José Luis
+García Montero, Luis
+García Nieto, José
+García Terrés, Jaime
+Garcíasol, Ramón de
+García Valdés, Olvido
+Garza, Humberto
+Gautier, Théophile
+Gelman, Juan
+Géraldy, Paul
+Gerbasi, Vicente
+Gil-Albert, Juan
+Gil de Biedma, Jaime
+Giménez, Esther
+Gimferrer, Pere
+Ginsberg, Allen
+Giorgio, Marosa di
+Girondo, Oliverio
+Girri, Alberto
+Glück, Louise Elisabeth
+Goethe, Johann Wolfgang
+Gómez de A., Gertrudis
+Gómez Jattin, Raúl
+Góngora y Argote, Luis de
+González, Ángel
+González de León, Ulalume
+González H., Carmen
+González Iglesias, Juan Antonio
+González M., Enrique
+González, María Clara
+Gorostiza, José
+Gourmont, Rémy de
+Goytisolo, José Agustín
+Gracia Trinidad, Enrique
+Grande, Félix
+Grass, Günter
+Greiff, León de
+Guedea, Rogelio
+Guerrini, Olindo
+Guillén, Jorge
+Guillén, Nicolás
+Guillén, Rafael
+Gumiliov, Nikolai
+Gutiérrez, Goya
+Gutiérrez Nájera, Manuel
+Guzmán, Almudena
+Guzmán, Feliciana Enríquez de
+Ha-Levi, Yehuda
+Hafiz, Shamsuddin
+Hahn, Oscar
+Hazm de Córdoba, Ibn
+Heaney, Seamus
+Heine, Heinrich
+Herbert, Zbigniew
+Heredia, José María de
+Hernández, Francisco
+Hernández, Luis
+Hernández, Miguel
+Hernanz Angulo, Beatriz
+Herrera, Fernando de
+Herrera y Reissig, Julio
+Hesse, Herman
+Heym, Georg
+Hickey y Pellizzoni, Margarita de
+Hidalgo, José Luis
+Hierro, José
+Hikmet, Nazim
+Hinojosa, José María
+Holan, Vladimír
+Hölderlin, Friedrich
+Huerta, Efraín
+Hughes, Ted
+Hugo, Victor
+Huidobro, Vicente
+Huxley, Aldous Leonard
+Ibáñez, Sara de
+Ibarbourou, Juana de
+Iglesias, Amalia
+Iglesias de la Casa, José
+Illescas, Carlos
+Iriarte, Tomás de
+Issa, Kobayashi
+Istarú, Ana
+Iza, Ana María
+Izquierdo, Luis
+Jabès, Edmond
+Jaccottet, Philippe
+Jaimes Freyre, Ricardo
+Janés, Clara
+Jaramillo Agudelo, Darío
+Jaramillo Levi, Enrique
+Jebeleanu, Eugen
+Jiménez, Diego Jesús
+Jiménez, Juan Ramón
+Jiménez Faro, Luzmaría
+Jodra Davó, Carmen
+Jovellanos, Gaspar Melchor de
+Joyce, James
+Juaristi, Jon
+Juarroz, Roberto
+Kabir, Saint
+Kapuściński, Ryszard
+Keats, John
+Khan, Kushal
+Khayyam, Omar
+Kipling, Rudyard
+Kozer, José
+Labastida, Jaime
+Labordeta, Miguel
+Lacaci, María Elvira
+Lagerkvist, Pär
+Lagos, Concha
+Lamartine, Alphonse de
+Larrea, Juan
+Lars, Claudia
+Lasker-Schuler, Else
+Leduc, Renato
+Leiris, Michel
+Lentini, Rosa
+León, Fray Luis de
+León, Rafael de
+Leopardi, Giacomo
+Lezama Lima, José
+Lihn, Enrique
+Linares, Abelardo
+Lizalde, Eduardo
+Llamazares, Julio
+Lobo, Eugenio Gerardo
+López, Elsa
+López Anglada, Luis
+López Narváez, Carlos
+López Velarde, Ramón
+Louys, Pierre
+Lovecraft, Howard P.
+Loynaz, Dulce María
+Lozano, Orietta
+Lozano y Lozano, Juan
+Luca, Gherasim
+Lugones, Leopoldo
+Luis, Leopoldo de
+Lupiáñez, José
+Luque, Aurora
+Machado, Antonio
+Machado, Manuel
+Maeterlinck, Maurice
+Magallanes, Manuel
+Maïacovski, Vladimir
+Maillard, Chantal
+Mallarmé, Stéphane
+Mandelstam, Osip
+Manent, Marià
+Manrique, Gómez
+Manrique, Jorge
+Maragall, Joan
+March, Ausias
+March, Susana
+Marechal, Leopoldo
+Margarit, Joan
+Martí i Pol, Miquel
+Martí, José
+Martínez Mesanza, Julio
+Martínez Sarrión, Antonio
+Marzal, Carlos
+Masoliver, Juan Antonio
+Matute, Carmen
+Maya, Cristina
+Medel, Elena
+Meléndez Valdés, Juan
+Mello Breyner A., Sophia de
+Méndez, Concha
+Méndez Ferrín, Xosé L.
+Merino, Ana
+Mestre, Juan Carlos
+Mialdea, Antonio José
+Michaux, Henri
+Milán, Eduardo
+Milosz, Czeslaw
+Mistral, Gabriela
+Mitre, Eduardo
+Moix, Ana María
+Molina, César Antonio
+Molina, Enrique
+Molina Foix, Vicente
+Molina, Ricardo
+Molina, Tirso de
+Molinari, Ricardo E.
+Montagut, María Cinta
+Montale, Eugenio
+Montejo, Eugenio
+Montesinos, Rafael
+Mor, Dolan
+Mora, Ángeles
+Morábito, Fabio
+Moraes, Vinicius de
+Morales, Rafael
+Moro, César
+Morón, Enrique
+Mujica, Hugo
+Munárriz, Jesús
+Muñoz Rojas, José Antonio
+Muñoz, Luis
+Murciano, Antonio
+Murciano, Carlos
+Mutis, Álvaro
+Nandino, Elías
+Neruda, Pablo
+Nerval, Gérard de
+Nervo, Amado
+Neuman, Andrés
+Nora, Eugenio de
+Nordbrandt, Henrik
+Noroña, Conde de
+Novo, Salvador
+Núñez, Aníbal
+Núñez de Arce, Gaspar
+Núñez, Serafina
+Núñez, Vicente
+Ocampo, Silvina
+Odio, Eunice
+Oliván, Lorenzo
+Oliver Labra, Carilda
+Orozco, Olga
+Ortega, Esperanza
+Ory, Carlos Edmundo de
+Otero, Blas de
+Otero Silva, Miguel
+Othón, Manuel José
+Owen, Gilberto
+Oz, Amos
+Pacheco, José Emilio
+Padilla, Heberto
+Padrón, Justo Jorge
+Palao, Paloma
+Palau i Fabre, Josep
+Panero, Juan Luis
+Panero, Leopoldo
+Panero, Leopoldo María
+Parra, Esdras
+Parra, Josefa
+Parra, Nicanor
+Parreño, José María
+Pasolini, Pier Paolo
+Pasternak, Boris
+Pavese, Cesar
+Paz Castillo, Fernando
+Paz Pasamar, Pilar
+Paz, Octavio
+Pellegrini, Aldo
+Pellicer, Carlos
+Pemán, José María
+Peña, Ricardo
+Péret, Benjamin
+Pérez Azaústre, Joaquín
+Peri Rossi, Cristina
+Perse, Saint-John
+Pessanha, Camilo
+Pessoa, Fernando
+Peza, Juan de Dios
+Pino, Francisco
+Pizarnik, Alejandra
+Plath, Sylvia
+Plaza, Antonio
+Poe, Edgar Allan
+Poliziano, Angelo
+Pound, Ezra
+Prado, Benjamín
+Prados, Emilio
+Prévert, Jacques
+Prilutzky, Julia
+Prudhome, Sully
+Pujol, Carlos
+Pushkin, Alexandr
+Quart, Pere
+Quasimodo, Salvatore
+Quessep, Giovanni
+Quevedo, Francisco de
+Rash-Isla, Miguel
+Reverdy, Pierre
+Rexroth, Kenneth
+Riba, Carles
+Rich, Adrienne
+Ridruejo, Dionisio
+Riechmann, Jorge
+Rilke, Rainer Maria
+Rimbaud, Arthur
+Ritsos, Yannis
+Rivero, Mario
+Robledo Ortiz, Jorge
+Rodas, Ana María
+Rodríguez, Claudio
+Rodríguez Fer, Claudio
+Rodríguez B., Isabel
+Rodríguez, Reina María
+Rojas, Fernando de
+Rojas, Gonzalo
+Rojas, Jorge
+Rokha, Pablo de
+Romero, Elvio
+Ronsard, Pierre de
+Rosal, María
+Rossetti, Ana
+Rueda, Salvador
+Ruiz, Juan (Arcipreste de Hita)
+Saavedra, Ángel de
+Saba, Umberto
+Sabatier, Robert
+Sabines, Jaime
+Sachs, Nelly
+Sahagún, Carlos
+Saint-Exupéry, Antoine de
+Salinas, Pedro
+Salvador, Álvaro
+Salvago, Javier
+Samaniego, Félix María
+Samaniego, Filoteo
+Sánchez Carrón, Irene
+Sánchez Peláez, Juan
+Sánchez Robayna, Andrés
+Sánchez Rosillo, Eloy
+Sandburg, Carl
+Santillana, Marqués de
+Sanz, María
+Saramago, José
+Sarduy, Severo
+Schiller, Friedrich
+Scorza, Manuel
+Segovia, Tomás
+Seferis, Giorgios
+Seifert, Jaroslav
+Shakespeare, William
+Shelley, Percy Bysshe
+Shiki, Masaoka
+Sicilia, Javier
+Siles, Jaime
+Silva, José Asunción
+Silvestre, Gregorio
+Simón, César
+Södergran, Edith
+Solís y Rivadeneira, Antonio de
+Sologub, Fedor
+Sologuren, Javier
+Sorescu, Marin
+Sòria, Enric
+Soto, Carmelina
+Soupault, Philippe
+Souvirón, José María
+Stadler, Ernst Maria Richard
+Stevens, Wallace
+Storni, Alfonsina
+Suñén, Juan Carlos
+Swann, Matilde Alba
+Szymborska, Wislawa
+Tablada, José Juan
+Tagore, Rabindranath
+Talens, Jenaro
+Tassis, Juan de
+Teillier, Jorge
+Tennyson, Alfred
+Thomas, Dylan
+Torre, Francisco de la
+Torres Bodet, Jaime
+Torres Villarroel, Diego de
+Tranströmer, Tomas
+Trakl, Georg
+Trapiello, Andrés
+Tsvetáieva, Marina
+Tubau, Iván
+Tzara, Tristan
+Uceda, Julia
+Ullán, José Miguel
+Ulloa Pereira, Luis de
+Un, Ko
+Unamuno, Miguel de
+Ungaretti, Giuseppe
+Urbina, Luis Gonzaga
+Uribe, Flor Alba
+Urquiza, Concha
+Urrutia, Jorge
+Valdés Díaz-Vélez, Jorge
+Valencia, Guillermo
+Valente, José Ángel
+Valero, Vicente
+Valéry, Paul
+Valle-Inclán, Ramón del
+Vallejo, César
+Valverde, Álvaro
+Valverde, José María
+Varela, Blanca
+Vaz Ferreira, Mª Eugenia
+Vázquez M., Manuel
+Vega, Garcilaso de la
+Vélez Otero, Juan José
+Verdaguer, Jacinto
+Verlaine, Paul
+Veyrat, Miguel
+Vicente, Gil
+Victoria, Laura
+Vieira, Maruja
+Vilariño, Idea
+Villaespesa, Francisco
+Villaurrutia, Xavier
+Villena, Luis Antonio de
+Vinderman, Paulina
+Virallonga, Jordi
+Vitale, Ida
+Vitier, Cintio
+Vivanco, Luis Felipe
+Walcott, Derek
+Walsh, María Elena
+Watanabe, José
+Westphalen, Emilio A.
+Whitman, Walt
+Wilde, Oscar
+Wolfe, Roger
+Wordsworth, William
+Yeats, William Butler
+Yevtushenko, Yevgueni
+Yourcenar, Marguerite
+Zagajewski, Adam
+Zaid, Gabriel
+Zalamea Borda, Luis
+Zambrano, María
+Zerón, Lina
+Zorrilla, José
+
+
+[Círculo de Poesía | https://circulodepoesia.com]
+# pega aquí los poetas de este sitio
+
+
+[Periódico de Poesía (UNAM) | https://periodicodepoesia.unam.mx]
+# pega aquí los poetas de este sitio
+
+
+[Material de Lectura | https://materialdelectura.unam.mx/poesia-moderna?start=204]
+Jorge Teillier
+Rubén Darío
+Giacomo Leopardi
+Carlos Montemayor
+Rodolfo Hinostroza
+Idea Vilariño
+Mayakovski
+Marguerite Yourcenar
+Walt Whitman
+Carl Sandburg
+Mario Luzi
+Tahar Ben Jelun
+Ezra Pound
+W.H. Auden
+Jorge Cuesta
+Giórgos Seféris
+José Gorostiza
+Jaime Sabines
+Xavier Villaurrutia
+T.S. Eliot
+Efraín Huerta
+Saint-John Perse
+Robert Lowell
+Ana Ajmátova
+Francisco González León
+Luis Cernuda
+José Juan Tablada
+Gilberto Owen
+Alí Chumacero
+José Carlos Becerra
+Vicente Huidobro
+Octavio Paz
+Luis Cardoza y Aragón
+Marco Antonio Montes de Oca
+Hernán Lavín Cerda
+Darío Jaramillo Agudelo
+Paul Valéry
+Silvia Eugenia Castillero
+Myriam Moscona
+Fernando Pessoa
+María Baranda
+Carlos Pellicer
+José Lezama Lima
+Julio Trujillo
+Lucian Blaga
+César Dávila Andrade
+Cavafis
+Joaquín Pasos
+Cesare Pavese
+e.e. cummings
+Gerard Manley Hopkins
+Rubén Bonifaz Nuño
+Stéphane Mallarmé
+Álvaro Mutis
+Yannis Ritsos
+León de Greiff
+Hugo Gutiérrez Vega
+Leopoldo Lugones
+Alejandra Pizarnik
+Allen Ginsberg
+Renato Leduc
+Guillermo Fernández
+Miguel Hernández
+Pedro Garfias
+Léopold Sédar Senghor
+Odysseas Elytis
+Carlos Drummond de Andrade
+Attila József
+Jorge Carrera Andrade
+Alfonso Reyes
+Rosario Castellanos
+Efrén Rebolledo
+Rainer María Rilke
+Salvador Novo
+Ramón López Velarde
+Salvador Díaz Mirón
+Alfonso Cortés
+Emily Dickinson
+Manuel Ponce
+Gerardo Deniz
+Pedro Salinas
+José Regio
+Anne Sexton
+William Carlos Williams
+Aurelio Arturo
+Wallace Stevens
+Luis Rosales
+Gary Snyder
+Rubén Bareiro Saguier
+Antonio Porchia
+José Antonio Ramos Sucre
+Vicente Quirarte
+César Rodríguez Chicharro
+Eugenio Montale
+Miguel Ángel Flores
+Carmen Alardín
+Elva Macías
+Olga Orozco
+Guadalupe Amor
+Philip Larkin
+Francisco Cervantes
+Livio Ramírez
+Dulce María Loynaz
+José Kozer
+Elsa Cross
+Francisco Hernández
+Thelma Nava
+Iván Carvajal
+Ted Hughes
+Gloria Gervitz
+Líber Falco
+Antonio Castañeda
+Aurora Reyes
+Roberto Juarroz
+Julio Herrera y Reissig
+Jaime Labastida
+Santiago Kovadloff
+Blanca Varela
+Manuel Gutiérrez Nájera
+Ernesto Mejía Sánchez
+Ángel González
+Marco Antonio Campos
+Carlos Illescas
+Antonio Cisneros
+Eduardo Lizalde
+Armando Rojas
+Jorge González Durán
+Roger Munier
+Juan Bañuelos
+Margarita Michelena
+Tomás Segovia
+Pablo Neruda
+Ulalume González de León
+André Pieyre de Mandiargues
+Martín Adán
+Nicanor Parra
+Lêdo Ivo
+Dionicio Morales
+Tudor Arghezi
+Bernardo Ortiz de Montellano
+Josu Landa
+Enrique Molina
+Raúl Renán
+Guillaume Apollinaire
+Miguel González Gerth
+Alfredo R. Placencia
+Enrique Casaravilla Lemos
+Juan Sánchez Peláez
+Ida Vitale
+Raúl Hernández Novás
+Seamus Heaney
+Jorge Ruiz Dueñas
+Gottfried Benn
+Jörgen Nash
+Alejandro Aura
+René Char
+Juan Gustavo Cobo Borda
+Homero Aridjis
+Saúl Ibargoyen
+Juan Gelman
+Georg Trakl
+Enrique Fierro
+Enriqueta Ochoa
+Rafael Cadenas
+Juan Ramón Jiménez
+Pierre Jean Jouve
+Marina Tsvetaieva
+Salvador Espriu
+César Moro
+Hermann Broch
+Ángela Figuera Aymerich
+Elizabeth Bishop
+Jorge Enrique Adoum
+Gabriela Mistral
+Oliverio Girondo
+Pier Paolo Pasolini
+Gonzalo Rojas
+Alfredo Gangotena
+Eduardo Carranza
+Edgar Lee Masters
+Isabel Fraire
+Fernando Ferreira de Loanda
+Jorge Gaitán Durán
+César Vallejo
+Enrique González Martínez
+Jaime García Terrés
+Jorge Guillén
+Czeslaw Milosz
+Kenneth Patchen
+Jaime Augusto Shelley
+Manuel Calvillo
+Víctor Sandoval
+Jaime Gil de Biedma
+Paul Claudel
+Noé Jitrik
+Alfredo Veiravé
+Óscar Oliva
+Antonio Colinas
+Eliseo Diego
+# --- antologías (varios autores) ---
+Cardarelli, Montale, Pasolini, Pavese, Quasimodo, Saba, Ungaretti
+Siete poetas norteamericanas contemporáneas
+Poesía Chicana
+Poesía polaca contemporánea
+Reunión (poetas mexicanos)
+Antología de la poesía contemporánea del Japón (1925-1960)
+Antología de la poesía moderna del Japón (1868-1945)
+La poesía en el rock
+Los imaginistas (Des imagistes)
+4 poetas jóvenes italianos
+Surrealistas franceses
+
+[Biblioteca Virtual Miguel de Cervantes | https://cervantesvirtual.com/areas/literatura/]
+Rosario de Acuña
+Rafael Alberti
+Alfonso X el Sabio
+Manuel Alonso Alcalde
+Manuel Álvarez Ortega
+María Victoria Atencia
+Enrique Badosa
+Gustavo Adolfo Bécquer
+Víctor Botas
+Manuel Bretón de los Herreros
+José Manuel Caballero Bonald
+José Cadalso
+Calderón de la Barca
+Ramón de Campoamor
+Alfonso Canales
+Pureza Canelo
+Guillermo Carnero
+Juana Castro
+Rosalía de Castro
+Gabriel Celaya
+Miguel de Cervantes
+Ernestina de Champourcin
+Juan Eduardo Cirlot
+Carmen Conde
+Rosa Díaz
+Mihai Eminescu
+Juan del Encina
+Antonio Enríquez Gómez
+José de Espronceda
+Ana María Fagundo
+Enrique Falcón
+Leandro Fernández de Moratín
+Ángela Figuera Aymerich
+Gloria Fuertes
+Manuel Gahete Jurado
+Vicente Gallego
+Francisco Gálvez
+María Rosa de Gálvez
+Antonio Gamoneda
+Vicente García de la Huerta
+Dionisia García
+Ángel García López
+Federico García Lorca
+Ramón García Mateos
+Luis García Montero
+Olvido García Valdés
+Garcilaso de la Vega
+Angelina Gatell
+Ildefonso-Manuel Gil
+Gertrudis Gómez de Avellaneda
+Luis de Góngora
+Ángel González
+Gonzalo de Berceo
+Antonio Gracia
+Rafael Guillén
+Ángel Guinda
+Adelina Gurrea Monasterio
+Miguel Hernández
+Fernando de Herrera
+José Luis Hidalgo
+Tomás de Iriarte
+Clara Janés
+Juan Ramón Jiménez
+Gaspar Melchor de Jovellanos
+San Juan de la Cruz
+María Elvira Lacaci
+Fray Luis de León
+Hermanos Argensola
+Leopoldo de Luis
+Aurora Luque
+Antonio Machado
+Susana March
+Joaquín Márquez
+Elena Martín Vivaldi
+Francisco Martínez de la Rosa
+Antonio Martínez Sarrión
+Diego Martínez Torrón
+Carlos Marzal
+Vicente Medina
+Juan Meléndez Valdés
+Antonio Méndez Rubio
+María Cinta Montagut
+Ángeles Mora
+Francisco Morales Lomas
+Elisabeth Mulder
+José Antonio Muñoz Rojas
+Carlos Edmundo de Ory
+Julia Otxoa
+Josep Palau i Fabre
+Juan Pérez de Montalbán
+José Luis Puerto
+Francisco de Quevedo
+Jorge Riechmann
+Duque de Rivas
+Claudio Rodríguez
+Rosa Romojaro
+Salvador Rueda
+Juan Ruiz, Arcipreste de Hita
+Félix María de Samaniego
+Eloy Sánchez Rosillo
+Lucía Sánchez Saornil
+Adolfo Sánchez Vázquez
+Marqués de Santillana
+María Sanz
+Antonio de Solís
+José Luis Tejada
+Santa Teresa de Jesús
+Diego de Torres Villarroel
+Andrés Trapiello
+Alfonso Vallejo
+Lope de Vega
+Juan José Vélez Otero
+Gerard Vergés
+Miguel Veyrat
+Concha Zardoya
+José Zorrilla
+
+
+[Vallejo & Co. | https://www.vallejoandcompany.com]
+# sitio-enlace: sin lista; el selector solo da el enlace para explorar

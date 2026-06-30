@@ -17,25 +17,25 @@
 
 ### Bloque A · Cimientos GCP (~3 h)
 - [ ] Crear / confirmar el proyecto en Google Cloud
-- [ ] Activar facturación + APIs (Vertex AI, BigQuery)
-- [ ] Configurar `gcloud` y la autenticación local
+- [x] Activar facturación + APIs (Vertex AI, BigQuery)
+- [x] Configurar `gcloud` y la autenticación local
 - [ ] Poner una alerta de presupuesto (p. ej. $20) — higiene de costos desde el día 1
 
 ### Bloque B · Datos semilla — arranque por lotes (~6–8 h) ⟵ la pieza más larga, va primero
-- [ ] Reunir 60–100 poemas: archivo de Qué Mal Poema + poemas que **amas** y poemas que **detestas**
-- [ ] Captura mínima de calificación (un CSV o un script simple; el sitio bonito viene después)
-- [ ] Calificar todos: `mal` / `medio` / `me gusta`
+- [~] Reunir 60–100 poemas: 50 calificados al 29 jun; sumando ~25/día esta semana
+- [x] Captura mínima de calificación (`src/add_poems.py` + `data/nuevos.txt`: pegar en lote, sin fricción)
+- [x] Calificar todos: `no me gusta` / `medio` / `me gusta` (1/2/3)
 
 ### Bloque C · Features + embeddings (~4–5 h)
-- [ ] Script de features deterministas con código (estrofas, nº de versos, longitud media, diversidad léxica, densidad de puntuación)
-- [ ] Llamar a `gemini-embedding-001` por poema y guardar los vectores
+- [x] Script de features deterministas (`src/features.py`)
+- [x] Llamar a `gemini-embedding-001` por poema y guardar los vectores (`src/embeddings.py`, 256d)
 
 ### Bloque D · Primer modelo (~5–6 h)
-- [ ] Notebook: entrenar un clasificador ligero (regresión logística) sobre embedding + features
-- [ ] Evaluar: accuracy + F1 por clase + matriz de confusión
-- [ ] Baseline: ¿le gana a un Gemini genérico sobre el mismo set?
+- [x] Entrenar un clasificador ligero (logística) sobre embedding + features (`src/train.py`)
+- [x] Evaluar: accuracy + F1-macro + matriz de confusión (LOO-CV, no notebook sino script)
+- [x] Baseline: ¿le gana a un Gemini genérico? (`src/gemini_baseline.py` — sí, en F1-macro)
 
-> **Hito (Dom 29 jun):** pego un poema y recibo una predicción entrenada con *mis* notas, con una cifra que prueba que funciona. ✅ Tesis validada — y si la cifra es floja, aquí es barato ajustar antes de construir más.
+> **Hito (Dom 29 jun):** pego un poema y recibo una predicción entrenada con *mis* notas, con una cifra que prueba que funciona. ✅ **Alcanzado:** F1-macro 0.399 (modelo) vs 0.204 (piso) vs 0.129 (Gemini). Cifra floja por n=50 → la palanca es más datos; `src/snapshot.py`+`data/historial.csv` trazan la curva de aprendizaje semanal.
 
 ---
 

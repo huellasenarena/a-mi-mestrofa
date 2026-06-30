@@ -29,7 +29,7 @@ Bucle de reentrenamiento (Vertex AI Pipeline, programado): extrae de BigQuery �
 - **Los embeddings se calculan una sola vez por poema al ingresarlo y se guardan en BigQuery.** Nunca re-embebas todo el corpus en una corrida de entrenamiento.
 - **El clasificador se mantiene ligero** (regresión logística para empezar). Nada de redes profundas — el dataset es pequeño y el embedding hace el trabajo pesado.
 - **Nunca despliegues un modelo nuevo sin pasar la compuerta campeón–challenger.** Un modelo nuevo reemplaza al de producción solo si lo supera en el set de prueba.
-- **El embedding captura tema/tono; las features deterministas capturan la forma** (lo que el embedding se pierde). Ambos alimentan el clasificador.
+- **El embedding captura tema/tono; las features deterministas capturan la forma** (lo que el embedding se pierde). Ambos alimentan el clasificador. *(Hallazgo empírico a n=50, 29 jun: a este tamaño la señal viene casi toda de las features de forma; el embedding sobreajusta por su alta dimensión y aún no aporta —`feat` F1=0.399 vs `emb` 0.244. No es razón para quitarlo: debería aportar al crecer el corpus, y `data/historial.csv` lo vigila. Re-evaluar antes de cablearlo o quitarlo del modelo servible.)*
 - **El corpus es solo en español.** No mezclar idiomas o el modelo aprendería "idioma" en vez de gusto. Implica que no hay API limpia de poemas aleatorios (PoetryDB es inglés); cualquier captura automática iría por scraping.
 
 ## Guardarraíles
