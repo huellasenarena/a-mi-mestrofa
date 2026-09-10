@@ -1,29 +1,3 @@
-# ─────────────────────────────────────────────────────────────────────
-# PEGA AQUÍ TUS POEMAS NUEVOS. Puedes pegar muchos de una vez.
-#
-# Reglas (sencillas):
-#   • Cada poema es un BLOQUE.
-#   • La PRIMERA línea del bloque es tu nota:  1, 2 o 3
-#       1 = no me gusta   2 = medio   3 = me gusta
-#   • Debajo, pega el poema (las líneas que quieras).
-#   • Separa un poema del siguiente con una línea que sea exactamente:  ===
-#   • Las líneas que empiezan con # se ignoran (como estas).
-#
-# IMPORTANTE: guarda este archivo como TEXTO PLANO (.txt), no como RTF.
-# Si pegas desde el navegador, los versos conservan sus saltos de línea solos.
-#
-# Ejemplo (bórralo y pon los tuyos):
-# ─────────────────────────────────────────────────────────────────────
-
-3
-Título opcional del poema
-aquí va el primer verso
-y aquí el segundo
-con sus saltos de línea intactos
-
-===
-
-1
-otro poema que no te gustó
-verso
-verso
+# Pega aquí tus poemas nuevos. Primera línea de cada bloque = nota (1/2/3).
+# Separa poemas con una línea:  ===
+# Guarda como texto plano (.txt), no RTF.
