@@ -1,2 +1,3 @@
-fecha,n_poemas,acc_feat,f1_feat,acc_emb,f1_emb,acc_embfeat,f1_embfeat,acc_gemini,f1_gemini
-2026-06-29,50,0.44,0.399,0.3,0.244,0.26,0.219,0.24,0.129
+fecha,n_poemas,acc_feat,f1_feat,acc_emb,f1_emb,acc_embfeat,f1_embfeat,acc_gemini,f1_gemini,comentario
+2026-06-29,50,0.44,0.399,0.3,0.244,0.26,0.219,0.34,0.237,gemini re-medido el 10 sep sobre los ids 1-50: el baseline original devolvia siempre 2 por un bug de max_output_tokens
+2026-09-10,187,0.374,0.349,0.465,0.424,0.455,0.413,0.316,0.284,gemini re-medido tras arreglar el bug de max_output_tokens

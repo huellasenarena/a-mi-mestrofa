@@ -24,12 +24,13 @@ Bucle de reentrenamiento (Vertex AI Pipeline, programado): extrae de BigQuery �
 
 ## Decisiones clave — y su porqué. No las deshagas sin preguntar.
 
+- **Las features deterministas suponen forma en verso.** Número de estrofas, versos y longitud media de verso son ruido en un poema en prosa, y el corpus tiene varios. Antes de juzgar cuánto aportan, separar los dos casos.
 - **Las features deterministas van en Python puro, nunca en un LLM.** Número de estrofas, número de versos, longitud media de verso, diversidad léxica (type-token ratio) y densidad de puntuación se calculan en código — un LLM contaría mal y costaría dinero. El único trabajo del LLM es la *opinión del Gemini genérico* en la vista de comparación, no extraer features.
 - **El modelo de embeddings es `gemini-embedding-001` (GA en Vertex AI).** No lo sustituyas por nombres viejos como `textembedding-gecko`.
 - **Los embeddings se calculan una sola vez por poema al ingresarlo y se guardan en BigQuery.** Nunca re-embebas todo el corpus en una corrida de entrenamiento.
 - **El clasificador se mantiene ligero** (regresión logística para empezar). Nada de redes profundas — el dataset es pequeño y el embedding hace el trabajo pesado.
 - **Nunca despliegues un modelo nuevo sin pasar la compuerta campeón–challenger.** Un modelo nuevo reemplaza al de producción solo si lo supera en el set de prueba.
-- **El embedding captura tema/tono; las features deterministas capturan la forma** (lo que el embedding se pierde). Ambos alimentan el clasificador. *(Hallazgo empírico a n=50, 29 jun: a este tamaño la señal viene casi toda de las features de forma; el embedding sobreajusta por su alta dimensión y aún no aporta —`feat` F1=0.399 vs `emb` 0.244. No es razón para quitarlo: debería aportar al crecer el corpus, y `data/historial.csv` lo vigila. Re-evaluar antes de cablearlo o quitarlo del modelo servible.)*
+- **El embedding captura tema/tono; las features deterministas capturan la forma** (lo que el embedding se pierde). Ambos alimentan el clasificador. *(Curva medida en `data/historial.csv`, F1-macro a 3 clases. A n=50 (29 jun) el embedding sobreajustaba y la señal venía de la forma: `feat` 0.399 vs `emb` 0.244. **A n=187 (10 sep) se invirtió: `emb` 0.424 vs `feat` 0.349**, y las features de forma caen por debajo del piso de clase mayoritaria. Sumarlas al embedding ahora resta un poco (`emb+feat` 0.413). No quitarlas todavía: parte de la caída se explica porque el corpus incluye poemas en prosa, donde "nº de versos" o "longitud media de verso" no describen nada. Volver a medir al crecer el corpus.)*
 - **El corpus es solo en español.** No mezclar idiomas o el modelo aprendería "idioma" en vez de gusto. Implica que no hay API limpia de poemas aleatorios (PoetryDB es inglés); cualquier captura automática iría por scraping.
 
 ## Guardarraíles
