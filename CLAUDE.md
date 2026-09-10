@@ -33,6 +33,16 @@ Bucle de reentrenamiento (Vertex AI Pipeline, programado): extrae de BigQuery �
 - **El embedding captura tema/tono; las features deterministas capturan la forma** (lo que el embedding se pierde). Ambos alimentan el clasificador. *(Curva medida en `data/historial.csv`, F1-macro a 3 clases. A n=50 (29 jun) el embedding sobreajustaba y la señal venía de la forma: `feat` 0.399 vs `emb` 0.244. **A n=187 (10 sep) se invirtió: `emb` 0.424 vs `feat` 0.349**, y las features de forma caen por debajo del piso de clase mayoritaria. Sumarlas al embedding ahora resta un poco (`emb+feat` 0.413). No quitarlas todavía: parte de la caída se explica porque el corpus incluye poemas en prosa, donde "nº de versos" o "longitud media de verso" no describen nada. Volver a medir al crecer el corpus.)*
 - **El corpus es solo en español.** No mezclar idiomas o el modelo aprendería "idioma" en vez de gusto. Implica que no hay API limpia de poemas aleatorios (PoetryDB es inglés); cualquier captura automática iría por scraping.
 
+## Proyecto hermano — Que Mal Poema
+
+`~/Desktop/qmp` · [quemalpoema.com](https://quemalpoema.com) · **repo aparte, a propósito.**
+
+Plataforma de publicación poética diaria del mismo autor: cada entrada lleva un poema propio, un poema citado de otro autor y un análisis. Es la fuente natural de poemas calificados para este proyecto — ya lee y juzga un poema ajeno al día.
+
+**Los repos no se fusionan** (decidido 10 sep 2026): el repo de QMP *es* el sitio (GitHub Pages sirve desde la raíz), así que todo lo que se meta ahí queda publicado, incluidos los poemas ajenos completos de `data/poemas.csv` y las calificaciones personales. Se conectan por datos: QMP publica `archivo.json` y los `.txt` por HTTPS, y este proyecto los consume. Acoplamiento en un solo sentido — el blog no puede romperse por un fallo de aquí.
+
+Diseño completo, trampas del pipeline y decisiones abiertas: [`docs/conexion-qmp.md`](./docs/conexion-qmp.md).
+
 ## Guardarraíles
 
 - **El costo es dinero real de GCP.** Prefiere tiers gratis/bajos. Avísame y espera confirmación antes de crear cualquier cosa con costo en reposo (p. ej. un endpoint dedicado de Vertex AI) o algo que escale el costo. Sugiere apagar recursos ociosos entre demos.
