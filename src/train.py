@@ -110,8 +110,11 @@ def main():
 
     # Tarea 1 — la demo de 3 clases.
     r3 = tarea("3 CLASES (no me gusta / medio / me gusta)", emb, feat, y)
-    print("\n    matriz de confusión (mejor conjunto = feat):")
-    _, _, yp = r3["feat"]
+    # cuál conjunto manda cambia con el tamaño del corpus (a n=50 era 'feat';
+    # con más datos el embedding remonta), así que se elige por F1, no a mano.
+    mejor = max(r3, key=lambda k: r3[k][1])
+    print(f"\n    matriz de confusión (mejor conjunto = {mejor}):")
+    _, _, yp = r3[mejor]
     cm = confusion_matrix(y, yp, labels=CLASES)
     print("            " + " ".join(f"pred{c}" for c in CLASES))
     for i, c in enumerate(CLASES):
@@ -127,10 +130,21 @@ def main():
     print("\n=== Baseline Gemini genérico (3 clases) ===")
     if GEMINI.exists():
         pred = {r["id"]: int(r["pred"]) for r in csv.DictReader(GEMINI.open())}
-        y_gem = np.array([pred[i] for i in ids])
-        acc = accuracy_score(y, y_gem)
-        f1 = f1_score(y, y_gem, average="macro", zero_division=0)
-        print(f"    gemini         acc={acc:.3f}  F1={f1:.3f}")
+        # el baseline puede ir por detrás del corpus (cuesta llamadas al LLM):
+        # comparamos sólo sobre los poemas que sí cubre, y lo decimos.
+        cubre = [n for n, i in enumerate(ids) if i in pred]
+        if not cubre:
+            print("    (el baseline no cubre ningún poema del corpus actual)")
+        else:
+            y_gem = np.array([pred[ids[n]] for n in cubre])
+            y_ref = y[cubre]
+            acc = accuracy_score(y_ref, y_gem)
+            f1 = f1_score(y_ref, y_gem, average="macro", zero_division=0)
+            falta = len(ids) - len(cubre)
+            aviso = f"  ⚠ sobre {len(cubre)}/{len(ids)} poemas" if falta else ""
+            print(f"    gemini         acc={acc:.3f}  F1={f1:.3f}{aviso}")
+            if falta:
+                print(f"    ({falta} sin baseline — corre src/gemini_baseline.py --force)")
     else:
         print("    (aún no calculado — corre src/gemini_baseline.py)")
 

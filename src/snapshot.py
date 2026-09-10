@@ -34,6 +34,7 @@ COLUMNAS = [
     "acc_emb", "f1_emb",         # solo embedding (tema/tono)
     "acc_embfeat", "f1_embfeat", # ambos
     "acc_gemini", "f1_gemini",   # baseline Gemini genérico
+    "comentario",                # por qué una fila no es directamente comparable
 ]
 
 
@@ -46,7 +47,7 @@ def cv(X, y):
 
 def main():
     ids, emb, feat, y = cargar_datos()
-    fila = {"fecha": date.today().isoformat(), "n_poemas": len(y)}
+    fila = {"fecha": date.today().isoformat(), "n_poemas": len(y), "comentario": ""}
 
     for nombre, X in [("feat", feat), ("emb", emb),
                       ("embfeat", np.hstack([emb, feat]))]:
@@ -54,12 +55,19 @@ def main():
         fila[f"acc_{nombre}"] = acc
         fila[f"f1_{nombre}"] = f1
 
-    if GEMINI.exists():
-        pred = {r["id"]: int(r["pred"]) for r in csv.DictReader(GEMINI.open())}
+    # El baseline sólo entra en el historial si cubre TODO el corpus: una fila
+    # de la curva de aprendizaje tiene que comparar peras con peras. Si va por
+    # detrás, se deja en blanco en vez de mezclar tamaños de muestra distintos.
+    pred = ({r["id"]: int(r["pred"]) for r in csv.DictReader(GEMINI.open())}
+            if GEMINI.exists() else {})
+    if pred and all(i in pred for i in ids):
         yg = np.array([pred[i] for i in ids])
         fila["acc_gemini"] = round(accuracy_score(y, yg), 3)
         fila["f1_gemini"] = round(f1_score(y, yg, average="macro", zero_division=0), 3)
     else:
+        if pred:
+            print(f"  ⚠ baseline incompleto ({len(set(ids) & set(pred))}/{len(ids)}): "
+                  "columna gemini en blanco.")
         fila["acc_gemini"] = ""
         fila["f1_gemini"] = ""
 
