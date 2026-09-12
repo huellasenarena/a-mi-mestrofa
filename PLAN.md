@@ -48,8 +48,8 @@
 
 ### Bloque F · Servir el modelo (~4–5 h)
 - [ ] Registrar el modelo en el Model Registry
-- [ ] Desplegar: endpoint de Vertex AI **o** Cloud Run si quieres ahorrar (decide según el costo en reposo)
-- [ ] Probar la predicción en vivo vía API
+- [x] Desplegar: **Cloud Run** (12 sep), clasificador en memoria; modelo en GCS (`src/campeon.py`)
+- [x] Probar la predicción en vivo vía API (`servidor/`, página del blog conectada)
 
 ### Bloque G · La app de dos partes — centro de la demo (~8–10 h)
 - [ ] Vista 1: calificar / etiquetar poemas — incluye **pegar poema + nota** para añadir sin fricción (reemplaza los scripts `add_poem.py`/`rate.py` de la terminal)

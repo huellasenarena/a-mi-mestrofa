@@ -1,0 +1,11 @@
+# Dependencias del servidor (Cloud Run).
+# scikit-learn, numpy y joblib van fijadas a las versiones con que se guardó
+# modelos/campeon.joblib: un pickle de otra versión puede no abrir, o abrir mal.
+scikit-learn==1.9.0
+numpy==2.5.0
+joblib==1.5.3
+fastapi==0.141.1
+uvicorn==0.52.4
+google-genai==2.10.0
+google-cloud-bigquery==3.42.1
+google-cloud-storage==3.12.0

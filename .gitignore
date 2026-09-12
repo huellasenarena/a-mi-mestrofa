@@ -32,3 +32,7 @@ data/raw/
 .DS_Store
 .vscode/
 .idea/
+
+# === Modelos entrenados (van a GCS, no a git) ===
+modelos/
+.pytest_cache/

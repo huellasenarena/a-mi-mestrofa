@@ -5,3 +5,10 @@ google-cloud-aiplatform>=1.71   # SDK de Vertex AI (incluye vertexai) — embedd
 scikit-learn>=1.5               # clasificador ligero (regresión logística)
 numpy>=1.26                     # vectores de embedding
 pandas>=2.2                     # manejo de tablas en el notebook
+
+# Servidor (servidor/requirements.txt fija las versiones de la imagen) y tests
+fastapi>=0.141
+uvicorn>=0.52
+google-cloud-bigquery>=3.42
+google-cloud-storage>=3.12
+pytest>=8

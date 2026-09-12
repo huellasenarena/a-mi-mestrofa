@@ -12,15 +12,15 @@ App web de dos partes:
 - **Vista de etiquetado** — leo un poema y lo califico (`mal` / `medio` / `me gusta`).
 - **Vista de comparación** — leo un poema, lo califico y veo tres veredictos lado a lado: mi nota, la conjetura de un Gemini genérico y la predicción de mi modelo personalizado.
 
-Camino en vivo: texto del poema → backend (Cloud Run) → features deterministas (código) + embedding (`gemini-embedding-001`) → clasificador en un endpoint de Vertex AI → predicción → comparación mostrada al usuario → todo se escribe en BigQuery.
+Camino en vivo (`servidor/`, en Cloud Run desde el 12 sep 2026): texto del poema → embedding (`gemini-embedding-001`) → clasificador cargado en memoria dentro del contenedor (no en un endpoint de Vertex: cobraría en reposo) → predicción + Gemini genérico → las predicciones de cada día del blog se congelan en BigQuery. Detalle en `docs/conexion-qmp.md`.
 
 Bucle de reentrenamiento (Vertex AI Pipeline, programado): extrae de BigQuery → valida los datos → entrena el challenger → evalúa contra el campeón actual *y* contra un baseline de Gemini genérico → compuerta campeón–challenger → si es mejor, registra en el Model Registry y actualiza el endpoint; si no, conserva el campeón.
 
 ## Stack
 
 - Python, scikit-learn (clasificador ligero)
-- Vertex AI: `gemini-embedding-001` (embeddings), endpoint (serving), Pipelines (reentrenamiento), Model Registry (versionado)
-- BigQuery (almacén de datos), Cloud Run (backend + app)
+- Vertex AI: `gemini-embedding-001` (embeddings), Gemini (baseline), Pipelines (reentrenamiento), Model Registry (versionado)
+- BigQuery (almacén de datos), Cloud Run (servidor FastAPI, escala a cero), Cloud Scheduler, Cloud Storage (modelo)
 
 ## Decisiones clave — y su porqué. No las deshagas sin preguntar.
 
@@ -29,6 +29,7 @@ Bucle de reentrenamiento (Vertex AI Pipeline, programado): extrae de BigQuery �
 - **El modelo de embeddings es `gemini-embedding-001` (GA en Vertex AI).** No lo sustituyas por nombres viejos como `textembedding-gecko`.
 - **Los embeddings se calculan una sola vez por poema al ingresarlo y se guardan en BigQuery.** Nunca re-embebas todo el corpus en una corrida de entrenamiento.
 - **El clasificador se mantiene ligero** (regresión logística para empezar). Nada de redes profundas — el dataset es pequeño y el embedding hace el trabajo pesado.
+- **Cada día del blog se predice una vez y la predicción no se toca nunca**, antes de que su nota entre al corpus. Es lo que hace honesto el marcador público. No recalcular días guardados ni predecir en vivo en `/hoy`.
 - **Nunca despliegues un modelo nuevo sin pasar la compuerta campeón–challenger.** Un modelo nuevo reemplaza al de producción solo si lo supera en el set de prueba.
 - **El embedding captura tema/tono; las features deterministas capturan la forma** (lo que el embedding se pierde). Ambos alimentan el clasificador. *(Curva medida en `data/historial.csv`, F1-macro a 3 clases. A n=50 (29 jun) el embedding sobreajustaba y la señal venía de la forma: `feat` 0.399 vs `emb` 0.244. **A n=187 (10 sep) se invirtió: `emb` 0.424 vs `feat` 0.349**, y las features de forma caen por debajo del piso de clase mayoritaria. Sumarlas al embedding ahora resta un poco (`emb+feat` 0.413). No quitarlas todavía: parte de la caída se explica porque el corpus incluye poemas en prosa, donde "nº de versos" o "longitud media de verso" no describen nada. Volver a medir al crecer el corpus.)*
 - **El corpus es solo en español.** No mezclar idiomas o el modelo aprendería "idioma" en vez de gusto. Implica que no hay API limpia de poemas aleatorios (PoetryDB es inglés); cualquier captura automática iría por scraping.

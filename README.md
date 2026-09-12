@@ -27,16 +27,22 @@ se muestra junto a la de un Gemini genérico para comparar lado a lado.
 ## Arquitectura
 
 ```
-texto del poema → backend (Cloud Run) → features deterministas + embedding (gemini-embedding-001)
-→ clasificador en Vertex AI → predicción → comparación (mi nota | Gemini genérico | mi modelo) → BigQuery
+texto del poema → Cloud Run (clasificador en memoria) → embedding (gemini-embedding-001, Vertex AI)
+→ predicción + opinión de Gemini genérico → comparación (mi nota | Gemini genérico | mi modelo) → BigQuery
 ```
+**En vivo:** [quemalpoema.com/site/mestrofa.html](https://www.quemalpoema.com/site/mestrofa.html).
+Cada día el blog publica un poema citado con mi nota; un Cloud Scheduler despierta
+al servidor, que predice ese poema **una sola vez** y congela la predicción en
+BigQuery *antes* de que la nota entre al entrenamiento. Así cada entrada del blog
+es un punto de test fuera de muestra y el marcador público no se puede amañar.
 Bucle de reentrenamiento (Vertex AI Pipeline, programado): BigQuery → valida →
 entrena challenger → compuerta campeón–challenger → Model Registry / endpoint.
 
 ## Stack
 - **Python**, scikit-learn (clasificador ligero)
-- **Vertex AI**: `gemini-embedding-001`, endpoint de serving, Pipelines, Model Registry
-- **BigQuery** (datos), **Cloud Run** (backend + app)
+- **Vertex AI**: `gemini-embedding-001`, Gemini (baseline), Pipelines, Model Registry
+- **Cloud Run** (servidor FastAPI, escala a cero), **Cloud Scheduler**, **Cloud Storage** (modelo)
+- **BigQuery** (predicciones congeladas)
 
 ## Retos
 - **Datos de origen sucios.** Los poemas venían en RTF; la conversión a texto
@@ -58,6 +64,16 @@ entrena challenger → compuerta campeón–challenger → Model Registry / endp
   un lector general?" contesta otra pregunta distinta a la del modelo. El rival
   honesto recibe **los mismos datos de entrenamiento** —40 poemas ya calificados,
   dentro del prompt— y se mide sobre **el mismo set de test**.
+- **Servir sin pagar por esperar.** Un endpoint dedicado de Vertex AI cobra cada
+  hora encendido; una regresión logística pesa KB. El clasificador corre dentro
+  del contenedor de Cloud Run (escala a cero) y sólo el embedding y Gemini se
+  pagan por llamada. La caja pública de predicción lleva un tope diario: una
+  alerta de presupuesto avisa, pero no frena.
+- **Un marcador que no se pueda amañar.** Si el servidor predijera en cada visita,
+  al reentrenar predeciría poemas que ya vio. Tres candados: cada día se predice
+  una vez y queda congelado; el servidor se niega a predecir un poema cuya huella
+  está en el entrenamiento del campeón; y el importador no trae al corpus un día
+  sin predicción guardada.
 - **Evaluación honesta.** Se compara siempre contra un piso (clase mayoritaria)
   y contra el Gemini genérico, en accuracy *y* F1-macro (la métrica justa con
   clases desbalanceadas).

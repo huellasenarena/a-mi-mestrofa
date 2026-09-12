@@ -1,0 +1,17 @@
+# Lo que NO se sube a Cloud Build al desplegar. El servidor sólo necesita
+# Dockerfile, src/*.py y servidor/. Los poemas y las notas se quedan aquí.
+.git
+.gitignore
+.venv/
+__pycache__/
+data/
+modelos/
+notebooks/
+tests/
+docs/
+*.rtf
+.env
+.env.*
+.claude/
+.DS_Store
+.pytest_cache/

@@ -27,13 +27,22 @@ así que el script no escribe nada hasta que mires la lista y pases --aplicar.
 Acoplamiento en un solo sentido: QMP no sabe que este proyecto existe. Aquí se
 consume una API pública; un fallo de este lado no puede romper el blog.
 
+El orden importa: un poema sólo entra al corpus cuando el servidor de la página
+"A mí me strofa" ya guardó su predicción. Si entrara antes, el modelo se
+entrenaría con él y su predicción dejaría de ser fuera de muestra — el marcador
+público perdería su valor. Por eso el script pregunta al servidor qué días
+están predichos y salta los demás.
+
 Uso:
     python src/importar_qmp.py             # enseña qué añadiría, no escribe
     python src/importar_qmp.py --aplicar   # lo añade a data/poemas.csv
+
+El servidor se toma de --servidor o de la variable MESTROFA_SERVIDOR.
 """
 import argparse
 import csv
 import json
+import os
 import re
 import sys
 import urllib.error
@@ -155,8 +164,19 @@ def titulo_de(entrada, poema):
 
 # --------------------------------------------------------------------------
 
-def recolectar(base, ya_estan, avisar):
-    """Devuelve (nuevos, saltados). nuevos = [(clave, fecha, titulo, nota, texto)]."""
+def fechas_predichas(servidor):
+    """Fechas con predicción guardada en el servidor de la página."""
+    try:
+        return {p["fecha"] for p in json.loads(bajar(f"{servidor.rstrip('/')}/predicciones"))}
+    except (urllib.error.URLError, json.JSONDecodeError, KeyError, TypeError) as e:
+        sys.exit(f"No pude preguntar al servidor qué días están predichos: {e}")
+
+
+def recolectar(base, ya_estan, avisar, predichas=None):
+    """Devuelve (nuevos, saltados). nuevos = [(clave, fecha, titulo, nota, texto)].
+
+    predichas: fechas con predicción guardada; las demás se saltan. None = no mirar.
+    """
     try:
         indice = json.loads(bajar(f"{base}/data/archivo.json"))
     except (urllib.error.URLError, json.JSONDecodeError) as e:
@@ -178,6 +198,10 @@ def recolectar(base, ya_estan, avisar):
             continue
         if clave in ya_estan:
             continue                       # ya importada
+        if predichas is not None and fecha not in predichas:
+            saltados.append((fecha, "sin predicción guardada: el modelo tiene que "
+                                    "predecir antes (se importa otro día)"))
+            continue
 
         try:
             txt = bajar(url_del_txt(base, fecha))
@@ -202,14 +226,24 @@ def main():
                     help="escribe en data/poemas.csv (por defecto sólo enseña)")
     ap.add_argument("--base", default=BASE_QMP,
                     help="raíz del sitio (para probar contra una copia local)")
+    ap.add_argument("--servidor", default=os.environ.get("MESTROFA_SERVIDOR"),
+                    help="URL del servidor de la página (o MESTROFA_SERVIDOR)")
+    ap.add_argument("--sin-prediccion", action="store_true",
+                    help="importa aunque no haya predicción guardada (rompe el marcador)")
     args = ap.parse_args()
+
+    if not args.servidor and not args.sin_prediccion:
+        sys.exit("Falta el servidor (--servidor o MESTROFA_SERVIDOR). Sin él no sé qué "
+                 "días ya están predichos, y un poema importado antes de su predicción "
+                 "ensucia el marcador. Si de verdad quieres, --sin-prediccion.")
+    predichas = None if args.sin_prediccion else fechas_predichas(args.servidor)
 
     filas = leer_corpus(CORPUS)
     ya_estan = {(f.get("fuente") or "").strip() for f in filas} - {""}
     print(f"Corpus: {len(filas)} poemas, {len(ya_estan)} venidos del blog.")
     print(f"Leyendo {args.base} …")
 
-    nuevos, saltados = recolectar(args.base, ya_estan, print)
+    nuevos, saltados = recolectar(args.base, ya_estan, print, predichas)
 
     if saltados:
         print(f"\nSaltados ({len(saltados)}):")

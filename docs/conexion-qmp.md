@@ -1,8 +1,9 @@
 # Conexión con Que Mal Poema
 
 Diseño acordado el 10 sep 2026. **Construido el 12 sep 2026**: la nota viaja
-por el pipeline de QMP y se publica en `archivo.json`, y `src/importar_qmp.py`
-la trae al corpus de aquí. Lo que falta es el servidor — ver el final.
+por el pipeline de QMP y se publica en `archivo.json`, `src/importar_qmp.py`
+la trae al corpus de aquí, y el servidor de la página está en Cloud Run — ver
+el final.
 
 ## Qué se quiere
 
@@ -144,23 +145,54 @@ el lado "no me gusta" por `data/nuevos.txt`.
    real · mi modelo · modelo genérico) y una caja para predecir cualquier texto.
    Lee una sola constante, `API_BASE`, hoy apuntando a unos JSON de ejemplo.
 
-## Lo que falta — el servidor
+## El servidor — hecho el 12 sep 2026
 
-Esto es lo único que queda, y es todo de este lado:
+`https://mestrofa-232425793411.us-central1.run.app` · código en `servidor/` ·
+la página del blog ya lo usa (commit `a7356c9` en qmp).
 
-- **`GET /hoy`** → la forma exacta está en `data/mestrofa-demo.json`. Campos:
-  `fecha`, `poeta`, `titulo`, `libro`, `texto_url`, `hay_duelo`, `gusto`,
-  `pred_modelo`, `pred_gemini`, `predicho_el`, `marcador`.
-- **`POST /predecir`** con `{"texto": "…"}` → `data/mestrofa-demo-predecir.json`:
-  `modelo`, `gemini`, `probs`, `aviso`.
-- **`fecha_duelo`** en `/hoy`: cuando el día de hoy no tiene poema en texto, la
-  página enseña los números del último día que sí lo tuvo, y necesita saber de
-  qué día son para decirlo. Sin ese campo enseña "no encontré nada".
-- Cambiar `API_BASE` en `site/mestrofa.js` (una línea) y CORS para
-  `quemalpoema.com`.
+| Ruta | Qué hace |
+|---|---|
+| `GET /hoy` | Sólo **lee** lo guardado. Forma de `data/mestrofa-demo.json` + `fecha_duelo` |
+| `POST /predecir` | La caja: predice en el momento, **no guarda**. Tope 50 usos/día, 6000 caracteres |
+| `GET /predicciones` | Todas las predicciones congeladas, para quien quiera verificar |
+| `POST /tareas/dia` | Cloud Scheduler, cada hora: predice los días con nota que aún no tienen predicción |
 
-**El orden importa:** el modelo tiene que predecir *antes* de que la nota entre
-al entrenamiento, o el marcador público deja de ser honesto.
+**Las predicciones se congelan.** Cada día del blog se predice una vez y queda en
+BigQuery (`mestrofa.predicciones_qmp`), con la versión del modelo y la huella del
+texto. Tres candados para el orden:
+
+1. El servidor no predice un poema que el campeón ya vio (clave `qmp:FECHA` o
+   huella del texto dentro del archivo del modelo).
+2. `importar_qmp.py` no importa días sin predicción guardada
+   (`--servidor` o `MESTROFA_SERVIDOR`).
+3. Si Gemini no responde, no se guarda nada y se reintenta a la hora siguiente.
+   Nunca se rellena con un número.
+
+**Qué dice `/hoy`:**
+- Hoy con nota y predicción → sus números, `fecha_duelo` = hoy.
+- Hoy con texto pero sin nota o sin predicción → nada. No se tapa con otro día.
+- Hoy sin texto (PDF) → los números del último día anterior con duelo, y
+  `fecha_duelo` dice cuál.
+- Marcador sin ningún día contado → todo `null` (la página lo esconde).
+
+**Los textos son del autor.** El servidor manda claves, la página las traduce:
+`motivo` = `sin_entradas` · `sin_nota` · `sin_prediccion` · `sin_texto`;
+`aviso` = `conocido` · `sin_gemini` · `corto` (una sola, en ese orden de prioridad).
+
+**Costo.** Todo escala a cero: Cloud Run (`max-instances=1`), BigQuery y Scheduler
+entran en el tier gratis. Se paga por llamada el embedding y Gemini (céntimos). El
+clasificador corre en memoria: sin endpoint de Vertex, que cobraría en reposo.
+
+**Pendiente:** `probs` no está calibrado — con 187 poemas, cuando el modelo dice
+95 % acierta 44 %. La página lo dibuja como barra de confianza; decidir si se
+quita, se calibra o se acompaña de una nota.
+
+**Desplegar un campeón nuevo** (sólo tras la compuerta campeón–challenger):
+
+    python src/campeon.py
+    gcloud storage cp modelos/campeon.joblib gs://a-mi-mestrofa-modelos/campeon/VERSION.joblib
+    gcloud run services update mestrofa --region us-central1 \
+        --update-env-vars MESTROFA_MODELO=gs://a-mi-mestrofa-modelos/campeon/VERSION.joblib
 
 ## Dónde está el modelo hoy (10 sep 2026)
 
