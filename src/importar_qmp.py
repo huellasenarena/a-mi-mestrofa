@@ -59,15 +59,36 @@ CABECERA_RE = re.compile(r"^#\s+[A-Z_]+\s*$")
 # Leer del blog
 # --------------------------------------------------------------------------
 
+# Sin User-Agent propio, urllib manda "Python-urllib/3.x" y el sitio devuelve
+# 403. Hace falta uno cualquiera que no sea ese.
+AGENTE = "importar_qmp/1.0 (+https://github.com/huellasenarena)"
+
+
 def bajar(url, timeout=30):
     # quemalpoema.com redirige (301) a www.quemalpoema.com; urllib sigue
     # redirecciones por su cuenta.
-    with urllib.request.urlopen(url, timeout=timeout) as r:
+    pet = urllib.request.Request(url, headers={"User-Agent": AGENTE})
+    with urllib.request.urlopen(pet, timeout=timeout) as r:
         return r.read().decode("utf-8")
 
 
 def url_del_txt(base, fecha):
     return f"{base}/data/textos/{fecha[:4]}/{fecha[5:7]}/{fecha}.txt"
+
+
+def limpiar_marcas(poema):
+    """Quita las marcas de maquetación del blog: son tipografía, no poema.
+
+    En QMP, '|' fija una sangría (el carácter no se dibuja) y '>>' al principio
+    de un verso lo alinea a la derecha. Dejarlas dentro metería ruido en el
+    embedding y en las features de forma.
+    """
+    fuera = []
+    for linea in poema.split("\n"):
+        linea = re.sub(r"^\s*>>\s*", "", linea)
+        linea = linea.replace("|", "")
+        fuera.append(linea.rstrip())
+    return "\n".join(fuera).strip()
 
 
 def extraer_poema_citado(txt):
@@ -85,7 +106,7 @@ def extraer_poema_citado(txt):
             continue
         if dentro:
             fuera.append(linea)
-    return "\n".join(fuera).strip()
+    return limpiar_marcas("\n".join(fuera))
 
 
 # --------------------------------------------------------------------------
