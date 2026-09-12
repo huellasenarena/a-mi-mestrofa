@@ -117,11 +117,16 @@ def main():
         print("\n(--dry-run: no escribí nada.)")
         return
 
-    # 1. Añade al corpus.
+    # 1. Añade al corpus. Se escriben las columnas que tenga el CSV: desde que
+    # src/importar_qmp.py existe puede llevar `fuente` y `fecha_origen`, que
+    # aquí van vacías (estos poemas los pegaste a mano, no vienen del blog).
+    with CORPUS.open(encoding="utf-8", newline="") as f:
+        columnas = next(csv.reader(f), ["id", "titulo", "nota", "texto"])
     with CORPUS.open("a", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.DictWriter(f, fieldnames=columnas)
         for i, (nota, tit, cuerpo) in enumerate(poemas, inicio):
-            w.writerow([i, tit, nota, cuerpo])
+            fila = {"id": i, "titulo": tit, "nota": nota, "texto": cuerpo}
+            w.writerow({c: fila.get(c, "") for c in columnas})
 
     # 2. Archiva lo procesado y limpia nuevos.txt.
     ARCHIVO_DIR.mkdir(parents=True, exist_ok=True)

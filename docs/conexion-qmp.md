@@ -1,7 +1,8 @@
 # Conexión con Que Mal Poema
 
-Diseño acordado el 10 sep 2026. Nada de esto está implementado todavía: es el
-punto de partida para la sesión que lo construya.
+Diseño acordado el 10 sep 2026. **Construido el 12 sep 2026**: la nota viaja
+por el pipeline de QMP y se publica en `archivo.json`, y `src/importar_qmp.py`
+la trae al corpus de aquí. Lo que falta es el servidor — ver el final.
 
 ## Qué se quiere
 
@@ -45,16 +46,23 @@ El `.txt` trae el poema citado bajo `# POEMA_CITADO`. `archivo.json` guarda
 **sólo metadatos** (fecha, poeta, títulos, keywords), nunca texto de poema — es
 un invariante de aquel proyecto, respetarlo.
 
-Lo único que falta en esa API es la nota de gusto.
+La nota de gusto ya está ahí: `analysis.gusto`, un entero 1/2/3, presente sólo
+en las entradas que la llevan.
 
-## Capturar la nota — el truco que ya funcionó allí
+## Capturar la nota — hecho
 
-QMP añadió la transparencia IA con marcadores en texto plano que viajan intactos
-por todo el pipeline (iA Writer → Atajo → Apps Script → Google Docs → pull) y se
-separan al final en `core/ia_sections.py::split_ia_markers`. **Cero cambios en el
-atajo, el Apps Script, el esquema de Docs o los YAML.** La nota debe ir igual.
+El autor escribe `## Gusto` con un 1, 2 o 3 después del análisis en iA Writer.
+Viaja intacto por todo el pipeline (iA Writer → Atajo → Apps Script → Google Docs
+→ pull) y se separa en `core/ia_sections.py::split_ia_markers`. **Cero cambios en
+el atajo, el Apps Script, el esquema de Docs o los YAML**, como se esperaba.
+Probado de punta a punta el 12 sep: una entrada de prueba se publicó sola en la
+barrida de las 06:00 y llegó con `analysis.gusto = 2`.
 
-Tres trampas encontradas al revisar el código:
+Es **obligatoria** desde el 12 sep 2026 (`GUSTO_DESDE` en `validate_entry.py`):
+si falta, la entrada no se publica. La sección va siempre, también los días de
+PDF, donde se escribe vacía. Las 164 entradas anteriores quedan exentas.
+
+Las tres trampas que se habían previsto, y cómo quedaron:
 
 1. **`## Notas` ya está ocupado.** `atajo.js` lo parsea y lo enruta a otro tab de
    Google Docs (`TAB_NOTAS_POEMAS` / `TAB_NOTAS_ANALISIS`); no viaja dentro del
@@ -71,9 +79,10 @@ Tres trampas encontradas al revisar el código:
    https://claude.ai/share/...
    ```
 
-   Puesto después del enlace no da error: simplemente no llega. `validate_entry.py`
-   debería rechazarlo explícitamente — un fallo silencioso más es justo lo que
-   este proyecto acaba de pagar caro (ver el bug del baseline, commit 330d008).
+   **Resuelto mejor de lo previsto:** `split_ia_markers` corta cada marcador
+   hasta el siguiente que aparezca, así que el orden en iA Writer ya da igual —
+   una nota escrita después del enlace se captura igual. El `.txt` sale siempre
+   en orden canónico, y `validate_entry.py` rechaza cualquier otro.
 3. **El dato no siempre existe.** De las 164 entradas, **139 tienen texto de
    poema citado y 25 están en modo PDF** (poemas visuales, sin texto). Y no todas
    las 139 son poema en español: la del 2026-08-24 cita un cuento de Hawthorne.
@@ -85,11 +94,22 @@ La nota es metadato, así que cabe en `archivo.json` sin romper su invariante.
 
 ## El importador (lado de este repo)
 
-`src/importar_qmp.py`: lee `archivo.json` + los `.txt`, extrae `# POEMA_CITADO`,
-filtra (modo PDF, idioma), deduplica por clave de origen `qmp:YYYY-MM-DD` y
-añade a `data/poemas.csv` con columnas `fuente` y `fecha_origen`. Idempotente,
-sin infraestructura, sin costo. Cuando existan Cloud Run + BigQuery (Bloques F y
-G del `PLAN.md`) se cambia el destino y el código de extracción no se toca.
+`src/importar_qmp.py` — **hecho el 12 sep 2026.** Lee `archivo.json` + los
+`.txt`, extrae `# POEMA_CITADO`, deduplica por clave de origen `qmp:YYYY-MM-DD`
+y añade a `data/poemas.csv` con columnas `fuente` y `fecha_origen` (que se
+añaden solas la primera vez; las 187 filas originales las llevan vacías).
+Idempotente, sólo biblioteca estándar, sin infraestructura, sin costo.
+
+    python src/importar_qmp.py             # enseña qué añadiría, no escribe
+    python src/importar_qmp.py --aplicar   # lo añade
+
+Las entradas en modo PDF se caen solas (no hay texto). **No filtra por idioma**:
+un detector sería otra dependencia y se equivocaría con poemas cortos, así que
+el script no escribe hasta que mires la lista y pases `--aplicar`. Es un poema
+al día; mirarlo cuesta nada.
+
+Cuando existan Cloud Run + BigQuery (Bloques F y G del `PLAN.md`) se cambia el
+destino y el código de extracción no se toca.
 
 **Pull, no push:** QMP no sabe que este proyecto existe; este proyecto consume una
 API pública. El acoplamiento va en un solo sentido y el blog no puede romperse
@@ -116,12 +136,31 @@ el lado "no me gusta" por `data/nuevos.txt`.
    no sirve como señal (lo calificaría siempre alto, y está en su voz, así que el
    modelo aprendería "esto lo escribió él" en vez de "esto le gusta"). Pendiente
    también si se descartan traducciones, para no aprender el estilo del traductor.
-2. **¿Importación retroactiva de los ~139 ya publicados?** Casi duplicaría el
-   corpus (187 → ~320), que es la palanca más grande disponible. Cuesta
-   calificarlos a mano, aunque son poemas ya leídos y analizados a fondo.
-3. **¿Qué muestra el blog?** Enlace estático ya, o marcador por entrada
-   ("mi modelo predijo X · mi nota fue Y") precalculado al publicar — esto último
-   necesita el modelo servible del Bloque F.
+2. ~~**¿Importación retroactiva de los ~139 ya publicados?**~~ **Decidido el 12
+   sep: no.** El autor ya calificó 187 a mano y no quiere calificar más. El
+   corpus crece a un poema al día desde ahora.
+3. ~~**¿Qué muestra el blog?**~~ **Hecho:** `site/mestrofa.html` en el repo de
+   QMP, publicado el 12 sep. Enseña el poema citado del día, tres números (nota
+   real · mi modelo · modelo genérico) y una caja para predecir cualquier texto.
+   Lee una sola constante, `API_BASE`, hoy apuntando a unos JSON de ejemplo.
+
+## Lo que falta — el servidor
+
+Esto es lo único que queda, y es todo de este lado:
+
+- **`GET /hoy`** → la forma exacta está en `data/mestrofa-demo.json`. Campos:
+  `fecha`, `poeta`, `titulo`, `libro`, `texto_url`, `hay_duelo`, `gusto`,
+  `pred_modelo`, `pred_gemini`, `predicho_el`, `marcador`.
+- **`POST /predecir`** con `{"texto": "…"}` → `data/mestrofa-demo-predecir.json`:
+  `modelo`, `gemini`, `probs`, `aviso`.
+- **`fecha_duelo`** en `/hoy`: cuando el día de hoy no tiene poema en texto, la
+  página enseña los números del último día que sí lo tuvo, y necesita saber de
+  qué día son para decirlo. Sin ese campo enseña "no encontré nada".
+- Cambiar `API_BASE` en `site/mestrofa.js` (una línea) y CORS para
+  `quemalpoema.com`.
+
+**El orden importa:** el modelo tiene que predecir *antes* de que la nota entre
+al entrenamiento, o el marcador público deja de ser honesto.
 
 ## Dónde está el modelo hoy (10 sep 2026)
 
