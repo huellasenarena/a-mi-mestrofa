@@ -187,12 +187,22 @@ clasificador corre en memoria: sin endpoint de Vertex, que cobraría en reposo.
 95 % acierta 44 %. La página lo dibuja como barra de confianza; decidir si se
 quita, se calibra o se acompaña de una nota.
 
-**Desplegar un campeón nuevo** (sólo tras la compuerta campeón–challenger):
+## La compuerta campeón–challenger — `src/compuerta.py`
 
-    python src/campeon.py
-    gcloud storage cp modelos/campeon.joblib gs://a-mi-mestrofa-modelos/campeon/VERSION.joblib
-    gcloud run services update mestrofa --region us-central1 \
-        --update-env-vars MESTROFA_MODELO=gs://a-mi-mestrofa-modelos/campeon/VERSION.joblib
+Decide si un modelo reentrenado reemplaza al de producción. Examen: los poemas
+del blog que predijo el campeón actual y que ya están en el corpus.
+
+- **Campeón:** sus predicciones congeladas (las del marcador, leídas de `/predicciones`).
+- **Challenger:** para cada poema del examen, entrenado con todo el corpus menos
+  ese poema. Sus features se eligen sin mirar el examen.
+- **Gemini:** sus predicciones congeladas, como referencia.
+- **Mínimo 20 poemas** (≈3 semanas); por debajo no decide. Reemplaza sólo si el
+  challenger saca **más** F1-macro; con empate se queda el campeón.
+- Cada corrida se anota en `data/compuerta.csv`. No despliega: si gana, guarda
+  `modelos/VERSION.joblib` y enseña los dos comandos para publicarlo.
+
+Rutina: importar (`importar_qmp.py`) → `embeddings.py` → `features.py` →
+`MESTROFA_SERVIDOR=… python src/compuerta.py`.
 
 ## Dónde está el modelo hoy (10 sep 2026)
 

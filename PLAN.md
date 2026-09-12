@@ -58,6 +58,7 @@
 - [ ] *(extra opcional)* Botón "dame un poema al azar" — *scraping* de sitios de poesía en español (no hay API limpia; ver decisión de corpus arriba). Solo si sobra tiempo.
 
 ### Bloque H · Bucle de reentrenamiento (~5–6 h) ⟵ válvula de seguridad si falta tiempo
+- [~] Compuerta campeón–challenger en local (`src/compuerta.py`, 12 sep): examen = poemas del blog, mín. 20
 - [ ] Vertex AI Pipeline: extrae → valida → entrena challenger → evalúa vs campeón → compuerta → despliega/conserva
 - [ ] Disparo manual primero; programar con Cloud Scheduler si alcanza el tiempo
 

@@ -12,8 +12,8 @@ El servidor las usa para negarse a predecir un poema que el modelo ya vio: esa
 predicción no sería fuera de muestra y ensuciaría el marcador público.
 
 Compuerta campeón–challenger (CLAUDE.md): este script NO reemplaza a un campeón
-existente. El primero entra sin rival porque no hay contra quién compararlo; la
-compuerta de verdad llega con el bucle de reentrenamiento (Bloque H del PLAN).
+existente. El primero entra sin rival porque no hay contra quién compararlo; los
+siguientes sólo entran por src/compuerta.py.
 
 Uso:
     python src/campeon.py
@@ -56,36 +56,30 @@ def conjuntos(emb, feat):
     return {"emb": emb, "feat": feat, "emb+feat": np.hstack([emb, feat])}
 
 
-def main():
-    if SALIDA.exists():
-        sys.exit(f"Ya hay un campeón en {SALIDA.relative_to(RAIZ)}. No lo reemplazo "
-                 "sin compuerta campeón–challenger (ver CLAUDE.md).")
-
+def cargar_todo():
+    """(ids, emb, feat, y, corpus) — y comprueba que nada del corpus quede sin embeber."""
     ids, emb, feat, y = cargar_datos()
     corpus = list(csv.DictReader(CORPUS.open(encoding="utf-8")))
     faltan = {r["id"] for r in corpus} - set(ids)
     if faltan:
         sys.exit(f"{len(faltan)} poemas del corpus sin embedding/features "
                  f"(ids {sorted(faltan, key=int)[:10]}). Corre src/embeddings.py y src/features.py.")
+    return ids, emb, feat, y, corpus
 
-    print(f"Corpus: {len(y)} poemas. Eligiendo features por F1-macro (LOO-CV):")
-    candidatos = conjuntos(emb, feat)
-    f1 = {nombre: evaluar(nombre, X, y)[1] for nombre, X in candidatos.items()}
-    elegido = max(f1, key=f1.get)
 
-    modelo = modelo_logistico().fit(candidatos[elegido], y)
+def crear_artefacto(X, y, conjunto, f1, corpus):
+    """Entrena con TODO el corpus y arma el archivo que sirve el servidor."""
+    modelo = modelo_logistico().fit(X, y)
     if list(modelo.classes_) != [1, 2, 3]:
         sys.exit(f"Clases inesperadas: {modelo.classes_}")
-
     ahora = datetime.now(timezone.utc)
-    version = f"{ahora:%Y-%m-%d}-n{len(y)}-{elegido}"
-    artefacto = {
-        "version": version,
+    return {
+        "version": f"{ahora:%Y-%m-%d}-n{len(y)}-{conjunto}",
         "entrenado_el": ahora.isoformat(timespec="seconds"),
         "modelo": modelo,
-        "conjunto": elegido,
+        "conjunto": conjunto,
         "feat_cols": FEAT_COLS,
-        "f1_loo": round(f1[elegido], 3),
+        "f1_loo": round(f1, 3),
         "n": len(y),
         "embedding": {
             "modelo": emb_cfg.MODELO,
@@ -95,9 +89,23 @@ def main():
         "claves_qmp": sorted({(r.get("fuente") or "").strip() for r in corpus} - {""}),
         "huellas": sorted({huella(r["texto"]) for r in corpus}),
     }
+
+
+def main():
+    if SALIDA.exists():
+        sys.exit(f"Ya hay un campeón en {SALIDA.relative_to(RAIZ)}. No lo reemplazo "
+                 "sin compuerta: usa src/compuerta.py (ver CLAUDE.md).")
+
+    ids, emb, feat, y, corpus = cargar_todo()
+    print(f"Corpus: {len(y)} poemas. Eligiendo features por F1-macro (LOO-CV):")
+    candidatos = conjuntos(emb, feat)
+    f1 = {nombre: evaluar(nombre, X, y)[1] for nombre, X in candidatos.items()}
+    elegido = max(f1, key=f1.get)
+
+    artefacto = crear_artefacto(candidatos[elegido], y, elegido, f1[elegido], corpus)
     SALIDA.parent.mkdir(exist_ok=True)
     joblib.dump(artefacto, SALIDA)
-    print(f"\n✓ campeón {version} (F1 LOO {f1[elegido]:.3f}) → {SALIDA.relative_to(RAIZ)}")
+    print(f"\n✓ campeón {artefacto['version']} (F1 LOO {f1[elegido]:.3f}) → {SALIDA.relative_to(RAIZ)}")
 
 
 if __name__ == "__main__":
