@@ -155,7 +155,7 @@ la página del blog ya lo usa (commit `a7356c9` en qmp).
 | `GET /hoy` | Sólo **lee** lo guardado. Forma de `data/mestrofa-demo.json` + `fecha_duelo` |
 | `POST /predecir` | La caja: predice en el momento, **no guarda**. Tope 50 usos/día, 6000 caracteres |
 | `GET /predicciones` | Todas las predicciones congeladas, para quien quiera verificar |
-| `POST /tareas/dia` | Cloud Scheduler, cada hora: predice los días con nota que aún no tienen predicción |
+| `POST /tareas/dia` | Cloud Scheduler, cada 10 min: predice los días con nota que aún no tienen predicción. Sin día nuevo no llama a Vertex |
 
 **Las predicciones se congelan.** Cada día del blog se predice una vez y queda en
 BigQuery (`mestrofa.predicciones_qmp`), con la versión del modelo y la huella del
@@ -165,18 +165,20 @@ texto. Tres candados para el orden:
    huella del texto dentro del archivo del modelo).
 2. `importar_qmp.py` no importa días sin predicción guardada
    (`--servidor` o `MESTROFA_SERVIDOR`).
-3. Si Gemini no responde, no se guarda nada y se reintenta a la hora siguiente.
+3. Si Gemini no responde, no se guarda nada y se reintenta a los 10 minutos.
    Nunca se rellena con un número.
 
 **Qué dice `/hoy`:**
 - Hoy con nota y predicción → sus números, `fecha_duelo` = hoy.
-- Hoy con texto pero sin nota o sin predicción → nada. No se tapa con otro día.
+- Hoy con texto pero sin nota o sin predicción → nada (`pendiente` si llega en
+  minutos). No se tapa con otro día.
 - Hoy sin texto (PDF) → los números del último día anterior con duelo, y
   `fecha_duelo` dice cuál.
 - Marcador sin ningún día contado → todo `null` (la página lo esconde).
 
 **Los textos son del autor.** El servidor manda claves, la página las traduce:
-`motivo` = `sin_entradas` · `sin_nota` · `sin_prediccion` · `sin_texto`;
+`motivo` = `sin_entradas` · `sin_nota` · `pendiente` (llega en minutos) · `ya_visto`
+(el modelo conocía el poema: no habrá duelo) · `sin_texto`;
 `aviso` = `conocido` · `sin_gemini` · `corto` (una sola, en ese orden de prioridad).
 
 **Costo.** Todo escala a cero: Cloud Run (`max-instances=1`), BigQuery y Scheduler

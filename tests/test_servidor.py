@@ -136,8 +136,29 @@ def test_dia_con_texto_sin_prediccion_no_tapa_con_otro_dia(mundo):
     hoy = c.get("/hoy").json()
     assert hoy["hay_duelo"] is False
     assert hoy["fecha_duelo"] is None
-    assert hoy["motivo"] == "sin_prediccion"
+    assert hoy["motivo"] == "pendiente"
     assert hoy["marcador"]["total"] == 1            # el acumulado sí se enseña
+
+
+def test_hoy_con_poema_que_el_modelo_ya_vio_dice_ya_visto(mundo):
+    mundo.entradas = [entrada("2026-09-13", gusto=2), entrada("2026-09-14", gusto=3)]
+    mundo.textos.update({"2026-09-13": LARGO, "2026-09-14": POEMA_VISTO})
+    c = mundo.cliente()
+    c.post("/tareas/dia")
+    hoy = c.get("/hoy").json()
+    assert hoy["hay_duelo"] is False and hoy["motivo"] == "ya_visto"
+
+
+def test_sin_dia_nuevo_la_tarea_no_llama_a_vertex(mundo):
+    mundo.entradas = [entrada("2026-09-13", gusto=2)]
+    mundo.textos["2026-09-13"] = LARGO
+    llamadas = []
+    mundo.predictor._embeber = lambda t: (llamadas.append(t), [0, 1, 0, 0])[1]
+    c = mundo.cliente()
+    c.post("/tareas/dia")
+    for _ in range(5):
+        c.post("/tareas/dia")
+    assert len(llamadas) == 1 and mundo.llamadas_gemini == 1
 
 
 def test_blog_caido_da_503(mundo):

@@ -4,10 +4,11 @@ Rutas:
     GET  /hoy            los números del día (sólo lee lo guardado)
     POST /predecir       la caja de texto: predice en el momento, no guarda nada
     GET  /predicciones   todas las predicciones congeladas, para quien quiera verificar
-    POST /tareas/dia     el despertador (Cloud Scheduler): predice los días nuevos
+    POST /tareas/dia     el despertador (Cloud Scheduler, cada 10 min): predice los días nuevos
 
 /tareas/dia es pública pero inofensiva: sólo predice días del blog que aún no
 tienen predicción, una vez cada uno. Llamarla mil veces no gasta más que una.
+Sin día nuevo no toca Vertex: baja archivo.json, lee BigQuery y termina.
 
 Arranque en local:
     MESTROFA_MODELO=modelos/campeon.joblib MESTROFA_ALMACEN=memoria \
@@ -86,7 +87,8 @@ def crear_app(almacen, predictor, leer_archivo, leer_poema, ahora=_ahora, tope=T
     @app.get("/hoy")
     def hoy():
         try:
-            return logica.armar_hoy(archivo(), predicciones(), lambda f: bool(poema(f)))
+            return logica.armar_hoy(archivo(), predicciones(), lambda f: bool(poema(f)),
+                                    lambda f: predictor.ya_visto(poema(f), f))
         except Exception as e:
             raise HTTPException(503, f"No pude leer el blog o las predicciones: {e}")
 
