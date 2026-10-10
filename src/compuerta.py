@@ -12,12 +12,15 @@ poemas y ninguno de los dos puede haberlos visto:
     el challenger  para cada poema del examen se entrena con TODO el corpus
                    menos ese poema, y lo predice
     Gemini         sus predicciones congeladas, como referencia
+    la frecuente   para cada poema, la nota más común del resto del corpus: lo que
+                   acierta quien no lee el poema. Un modelo que no la supera no
+                   entiende el gusto, sólo aprendió qué nota pongo más
 
 Qué features usa el challenger (emb / feat / emb+feat) se elige con LOO-CV sobre
 los poemas que NO son del examen: elegirlas mirando el examen sería trampa.
 
 Con pocos poemas, ganar o perder es azar, así que por debajo de --minimo (20)
-no decide nada. Sólo reemplaza si el challenger saca MÁS F1-macro; con empate
+enseña los números pero no decide nada. Sólo reemplaza si el challenger saca MÁS F1-macro; con empate
 se queda el campeón. Cada corrida se anota en data/compuerta.csv, gane quien
 gane.
 
@@ -72,7 +75,7 @@ def examinar(candidatos, y, es_examen, pred_campeon, pred_gemini, minimo=MINIMO)
     """
     examen = np.flatnonzero(es_examen)
     res = {"n": len(examen)}
-    if len(examen) < minimo:
+    if len(examen) == 0:
         return {**res, "decision": "faltan_datos"}
 
     # 1. Elegir features sin mirar el examen.
@@ -92,21 +95,31 @@ def examinar(candidatos, y, es_examen, pred_campeon, pred_gemini, minimo=MINIMO)
         for i in examen
     ])
 
+    # 3. La frecuente: con lo mismo que sabe el challenger, pero sin leer el poema.
+    pred_frecuente = np.array([
+        CLASES[int(np.argmax([np.sum(y[todos != i] == c) for c in CLASES]))]
+        for i in examen
+    ])
+
     y_ex = y[examen]
     res.update({
         "conjunto": conjunto,
         "f1_campeon": _f1(y_ex, pred_campeon), "acc_campeon": _acc(y_ex, pred_campeon),
         "f1_challenger": _f1(y_ex, pred_challenger), "acc_challenger": _acc(y_ex, pred_challenger),
         "f1_gemini": _f1(y_ex, pred_gemini), "acc_gemini": _acc(y_ex, pred_gemini),
+        "f1_frecuente": _f1(y_ex, pred_frecuente), "acc_frecuente": _acc(y_ex, pred_frecuente),
     })
-    res["decision"] = "cambiar" if res["f1_challenger"] > res["f1_campeon"] else "conservar"
+    if len(examen) < minimo:
+        res["decision"] = "faltan_datos"
+    else:
+        res["decision"] = "cambiar" if res["f1_challenger"] > res["f1_campeon"] else "conservar"
     return res
 
 
 def anotar(res, version_campeon):
     nuevo = not REGISTRO.exists()
     cols = ["fecha", "campeon", "n", "conjunto", "f1_campeon", "acc_campeon",
-            "f1_challenger", "acc_challenger", "f1_gemini", "acc_gemini", "decision"]
+            "f1_challenger", "acc_challenger", "f1_gemini", "acc_gemini", "f1_frecuente", "acc_frecuente", "decision"]
     with REGISTRO.open("a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=cols)
         if nuevo:
@@ -154,15 +167,20 @@ def main():
     )
     anotar(res, version)
 
+    if res["n"]:
+        print(f"\n{'':14}  F1     acierta")
+        for quien in ("campeon", "challenger", "gemini", "frecuente"):
+            print(f"  {quien:12}  {res['f1_' + quien]:.3f}  {res['acc_' + quien]:.0%}")
+        print(f"  (challenger con features '{res['conjunto']}'; "
+              "frecuente = siempre la nota más común, sin leer el poema)")
+        for quien in ("campeon", "challenger"):
+            if res["f1_" + quien] <= res["f1_frecuente"]:
+                print(f"  ⚠ el {quien} no supera a la frecuente")
+
     if res["decision"] == "faltan_datos":
         print(f"\nTodavía no decido: hacen falta {args.minimo} poemas y hay {res['n']}. "
               "El campeón sigue.")
         return
-
-    print(f"\n{'':14}  F1     acierta")
-    for quien in ("campeon", "challenger", "gemini"):
-        print(f"  {quien:12}  {res['f1_' + quien]:.3f}  {res['acc_' + quien]:.0%}")
-    print(f"  (challenger con features '{res['conjunto']}')")
 
     if res["decision"] == "conservar":
         print("\nEl challenger no supera al campeón. Se queda el campeón.")

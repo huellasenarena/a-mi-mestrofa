@@ -23,10 +23,26 @@ def datos(n=90, examen=24, semilla=0):
     return {"emb": emb, "feat": feat}, y, es_examen
 
 
-def test_con_pocos_poemas_no_decide():
+def test_con_pocos_poemas_enseña_los_numeros_pero_no_decide():
     cand, y, ex = datos(examen=19)
-    r = compuerta.examinar(cand, y, ex, y[ex], y[ex], minimo=20)
-    assert r == {"n": 19, "decision": "faltan_datos"}
+    malo = np.full(ex.sum(), 1)
+    r = compuerta.examinar(cand, y, ex, malo, malo, minimo=20)
+    assert r["n"] == 19 and r["decision"] == "faltan_datos"
+    assert r["f1_challenger"] > r["f1_campeon"]     # aunque gane, no cambia
+
+
+def test_sin_examen_no_hay_numeros():
+    cand, y, ex = datos()
+    ex = np.zeros_like(ex)
+    assert compuerta.examinar(cand, y, ex, y[ex], y[ex]) == {"n": 0, "decision": "faltan_datos"}
+
+
+def test_la_frecuente_responde_la_nota_mas_comun_sin_leer():
+    cand, y, ex = datos()
+    y = y.copy()
+    y[:60] = 1                                      # el corpus es casi todo "1"
+    r = compuerta.examinar(cand, y, ex, y[ex], y[ex])
+    assert r["acc_frecuente"] == np.mean(y[ex] == 1)
 
 
 def test_challenger_bueno_contra_campeon_malo_cambia():
