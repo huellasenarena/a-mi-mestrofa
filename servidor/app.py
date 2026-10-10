@@ -1,7 +1,7 @@
 """El servidor de la página "A mí me strofa" (quemalpoema.com/site/mestrofa.html).
 
 Rutas:
-    GET  /hoy            los números del día (sólo lee lo guardado)
+    GET  /hoy?fecha=     los números del día del lector (sólo lee lo guardado)
     POST /predecir       la caja de texto: predice en el momento, no guarda nada
     GET  /predicciones   todas las predicciones congeladas, para quien quiera verificar
     POST /tareas/dia     el despertador (Cloud Scheduler, cada 10 min): predice los días nuevos
@@ -18,7 +18,7 @@ import os
 import sys
 import threading
 import time
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -60,6 +60,21 @@ class Cache:
             self._valor = None
 
 
+def _dia_del_lector(fecha, ahora):
+    """La fecha que manda la página (la del reloj del lector), o la UTC sin ella.
+
+    Ningún huso está a más de un día de UTC: una fecha más lejos es un reloj mal
+    puesto o alguien queriendo ver las entradas programadas, y se recorta.
+    """
+    hoy_utc = ahora.date()
+    try:
+        dia = date.fromisoformat(fecha) if fecha else hoy_utc
+    except ValueError:
+        dia = hoy_utc
+    dia = min(max(dia, hoy_utc - timedelta(days=1)), hoy_utc + timedelta(days=1))
+    return dia.isoformat()
+
+
 class Texto(BaseModel):
     texto: str
 
@@ -85,10 +100,11 @@ def crear_app(almacen, predictor, leer_archivo, leer_poema, ahora=_ahora, tope=T
         return poemas[fecha]
 
     @app.get("/hoy")
-    def hoy():
+    def hoy(fecha: str | None = None):
+        hasta = _dia_del_lector(fecha, ahora())
         try:
             return logica.armar_hoy(archivo(), predicciones(), lambda f: bool(poema(f)),
-                                    lambda f: predictor.ya_visto(poema(f), f))
+                                    lambda f: predictor.ya_visto(poema(f), f), hasta=hasta)
         except Exception as e:
             raise HTTPException(503, f"No pude leer el blog o las predicciones: {e}")
 

@@ -89,15 +89,18 @@ def _sin_duelo(motivo):
     }
 
 
-def armar_hoy(entradas, predicciones, tiene_texto, ya_visto=lambda fecha: False):
+def armar_hoy(entradas, predicciones, tiene_texto, ya_visto=lambda fecha: False, hasta=None):
     """La respuesta de GET /hoy.
 
     entradas      archivo.json del blog, en cualquier orden
     predicciones  {fecha: fila guardada}
     tiene_texto   fecha -> bool: si ese día trae poema citado en texto
     ya_visto      fecha -> bool: si el modelo se entrenó con el poema de ese día
+    hasta         'YYYY-MM-DD': la fecha del lector; lo posterior no existe todavía
 
-    "Hoy" es la última entrada publicada, no la fecha del reloj.
+    "Hoy" es la última entrada publicada hasta `hasta`, como en la portada del
+    blog: el autor programa entradas por adelantado y ésas no se enseñan antes
+    de su día, ni cuentan en el marcador.
 
     `motivo` (sólo si hay_duelo es false):
         sin_entradas  el blog no tiene entradas
@@ -112,7 +115,8 @@ def armar_hoy(entradas, predicciones, tiene_texto, ya_visto=lambda fecha: False)
     - Hoy sin poema en texto (PDF) → los números del último día anterior que
       los tenga, con fecha_duelo para que la página diga de qué día son.
     """
-    entradas = sorted(entradas, key=lambda e: e["date"])
+    entradas = sorted((e for e in entradas if hasta is None or e["date"] <= hasta),
+                      key=lambda e: e["date"])
     if not entradas:
         return {**_sin_duelo("sin_entradas"),
                 "marcador": marcador([], predicciones)}

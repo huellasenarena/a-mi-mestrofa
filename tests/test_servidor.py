@@ -125,6 +125,42 @@ def test_dia_pdf_sin_ningun_dia_anterior_no_inventa(mundo):
     assert hoy["motivo"] == "sin_texto"
 
 
+def test_las_entradas_programadas_no_se_enseñan_antes_de_su_dia(mundo):
+    # El reloj de las pruebas marca 2026-09-14 06:30 UTC.
+    mundo.entradas = [entrada("2026-09-13", gusto=2), entrada("2026-09-14", gusto=3),
+                      entrada("2026-09-20", gusto=1)]
+    mundo.textos.update({"2026-09-13": LARGO, "2026-09-14": LARGO + " hoy",
+                         "2026-09-20": LARGO + " futuro"})
+    c = mundo.cliente()
+    c.post("/tareas/dia")                           # el futuro se predice igual, temprano
+
+    hoy = c.get("/hoy?fecha=2026-09-14").json()
+    assert hoy["fecha"] == "2026-09-14"
+    assert hoy["gusto"] == 3
+    assert hoy["marcador"]["total"] == 2            # el 20 no cuenta todavía
+
+    sin_fecha = c.get("/hoy").json()                # sin fecha, la de UTC
+    assert sin_fecha["fecha"] == "2026-09-14"
+
+
+def test_la_fecha_del_lector_decide_el_dia(mundo):
+    mundo.entradas = [entrada("2026-09-13", gusto=2), entrada("2026-09-14", gusto=3)]
+    mundo.textos.update({"2026-09-13": LARGO, "2026-09-14": LARGO + " hoy"})
+    c = mundo.cliente()
+    c.post("/tareas/dia")
+    # De noche en América, todavía es 13 aunque en UTC ya sea 14.
+    assert c.get("/hoy?fecha=2026-09-13").json()["fecha"] == "2026-09-13"
+
+
+def test_una_fecha_lejana_o_rota_se_recorta(mundo):
+    mundo.entradas = [entrada("2026-09-10", gusto=1), entrada("2026-09-14", gusto=2),
+                      entrada("2026-09-15", gusto=3), entrada("2026-12-31", gusto=3)]
+    c = mundo.cliente()
+    assert c.get("/hoy?fecha=2026-12-31").json()["fecha"] == "2026-09-15"   # +1 día, no más
+    assert c.get("/hoy?fecha=2020-01-01").json()["fecha"] == "2026-09-10"   # -1 día → 13
+    assert c.get("/hoy?fecha=mañana").json()["fecha"] == "2026-09-14"
+
+
 def test_dia_con_texto_sin_prediccion_no_tapa_con_otro_dia(mundo):
     mundo.entradas = [entrada("2026-09-13", gusto=2), entrada("2026-09-14", gusto=3)]
     mundo.textos.update({"2026-09-13": LARGO, "2026-09-14": LARGO + " hoy"})
